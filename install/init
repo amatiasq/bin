@@ -37,9 +37,9 @@ sudo $run -c "
 	$install/basic-packages
 	$install/extra-repositories
 	$install/downloable-packages
-	$install/dart $HOME/apps
 "
 
+$install/dart $HOME/apps
 $install/repositories
 $install/configurations
 
