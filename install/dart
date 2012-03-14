@@ -1,0 +1,53 @@
+#!/bin/bash -e
+
+if [ "`whoami`" != "root" ]
+then
+	echo "This script must be executed as root"
+	exit
+fi
+
+target="$1"
+log="/dev/null"
+
+if [ -z "$target" ]
+then
+	target="/usr/apps"
+fi
+
+if [ ! -d "$target" ]
+then
+	mkdir -p "$target"
+fi
+
+cd "$target"
+
+echo "Installing Dart..."
+echo "    Dependences"
+apt-get -qq install -y libssl0.9.8
+echo "    Downloading"
+wget -q -O dart.$$.zip http://gsdview.appspot.com/dart-editor-archive-integration/latest/dart-linux.zip
+
+if [ -d "$target/dart-sdk" ]
+then
+	rm -r "$target/dart-sdk"
+fi
+
+echo "    Unzipping"
+unzip dart.$$.zip >> $log
+
+echo "    Removing zip"
+mv dart.$$.zip /tmp
+
+echo "    Creating links"
+
+for exec in 'dart' 'frogc'
+do
+	if [ -f "/usr/bin/$exec" ]
+	then
+		rm "/usr/bin/$exec"
+	fi
+
+	ln -s "$target/dart-sdk/bin/$exec" "/usr/bin/$exec"
+done
+
+echo "Done"

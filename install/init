@@ -1,0 +1,46 @@
+#!/bin/bash -e
+
+log=/dev/null
+bin=~/bin.new
+run="bash -e"
+
+echo 'Retrieving GIT...'
+sudo apt-get -qq install -y git-core
+
+echo 'Configuring GIT...'
+git config --global user.name "A. Matías Quezada" > $log
+git config --global user.email "amatiasq@gmail.com" > $log
+
+
+rsa=~/.ssh/id_rsa.pub
+if [ ! -f $rsa ]
+then
+	echo 'Generating RSA...'
+	ssh-keygen -t rsa -C "amatiasq@gmail.com" > $log
+fi
+
+echo -e 'Public key must be added to github:\n'
+cat $rsa
+#gedit $rsa > $log
+echo -e '\nPress [Enter] when done.'
+read
+
+if [ ! -d "$bin" ]
+then
+	echo 'Cloning executable repository...'
+	git clone "git@github.com:Seldaiendil/Shell.git" "$bin"
+fi
+
+install="$run $bin/install"
+
+sudo $run -c "
+	$install/basic-packages
+	$install/extra-repositories
+	$install/downloable-packages
+	$install/dart $HOME/apps
+"
+
+$install/repositories
+$install/configurations
+
+echo "DONE"

@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ssh -L 8011:u60016513@seldaiendil.com:80

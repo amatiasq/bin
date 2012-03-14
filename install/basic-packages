@@ -1,0 +1,26 @@
+#!/bin/bash -e
+
+if [ "`whoami`" != "root" ]
+then
+	echo "This script must be executed as root"
+	exit
+fi
+
+echo "Updating repositories..."
+apt-get -qq update
+
+
+echo "Uninstalling unwanted packages..."
+apt-get -qq remove -y empathy evolution
+
+
+echo "Installing packages..."
+apt-get -qq install -y  build-essential pkg-config curl gcc g++ \
+						python-software-properties \
+						vim openssh-server guake htop git-core subversion meld \
+						unzip unrar \
+						banshee vlc gimp compizconfig-settings-manager \
+						mysql-server apache2 php5 python proftpd \
+						monodevelop monodevelop-database monodevelop-debugger-gdb monodevelop-java monodevelop-nunit monodevelop-python monodevelop-vala monodevelop-versioncontrol
+
+echo "Done"

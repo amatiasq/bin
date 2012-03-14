@@ -1,0 +1,26 @@
+#!/bin/bash
+
+log="/dev/null"
+
+for project in "Dartmine" "Life"
+do
+	echo "Found project $project"
+	cd
+	dir=~/repos/$project
+
+	if [ ! -d "$dir" ]
+	then
+		echo "    Cloning into $dir"
+		git clone "git@github.com:amatiasq/$project.git" "$dir" &> $log
+
+		if [ -f "$dir/.gitmodules" ]
+		then
+			echo "    Loading submodules"
+			cd "$dir"
+			git submodule init >> $log
+			git submodule update &>> $log
+		fi
+	fi
+done
+
+echo "Done"

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+path="$(dirname $0)"
+
+sudo bash -c "
+	echo 'Global configurations'
+	bash $path/configurations-internal $path/root /
+	echo 'User configurations'
+	bash $path/configurations-internal $path/home ~
+	echo 'Custom configurations'
+	cat $path/custom/usr/share/vim/vim73/filetype.dart.vim >> /usr/share/vim/vim73/filetype.vim
+"

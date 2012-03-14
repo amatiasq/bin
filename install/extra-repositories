@@ -1,0 +1,35 @@
+#!/bin/bash -e
+
+if [ "`whoami`" != "root" ]
+then
+	echo "This script must be executed as root"
+	exit
+fi
+
+log="/dev/null"
+
+echo "Adding repositories..."
+
+echo "    Sublime Text"
+add-apt-repository -y ppa:webupd8team/sublime-text-2 &>> $log
+apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 521767F1 &>> $log
+
+echo "    NodeJS"
+add-apt-repository -y ppa:chris-lea/node.js &>> $log
+
+echo "    MongoDB"
+echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" > /etc/apt/sources.list.d/nodejs.list
+apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10 &>> $log
+
+echo "    Wakoopa"
+echo "deb http://apt.wakoopa.com all main" > /etc/apt/sources.list.d/wakoopa.list
+wget -q -O - http://apt.wakoopa.com/pubkey.txt | sudo apt-key add - &>> $log
+
+echo "Updating aptitude..."
+apt-get -qq update
+
+
+echo "Installing external packages..."
+apt-get -qq install -y nodejs nodejs-dev npm sublime-text-2 wakoopa clipit
+
+echo "Done"

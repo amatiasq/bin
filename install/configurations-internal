@@ -1,0 +1,23 @@
+prefix="$2"
+
+cd "$1"
+
+SAVEIFS=$IFS
+IFS=$(echo -en "\n\b")
+
+echo '    Creating dirs'
+for dir in $(find . -type d)
+do
+	if [ ! -d "$prefix/$dir" ]
+	then
+		mkdir "$prefix/$dir"
+	fi
+done
+
+echo '    Copying files'
+for file in $(find . -type f)
+do
+	cp "$file" "$prefix/$file"
+done
+
+IFS=$SAVEIFS

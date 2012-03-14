@@ -1,0 +1,13 @@
+#!/bin/bash
+
+function scan() {
+	if ping -c 1 192.168.1.$1 > /dev/null
+	then
+		echo 192.168.1.$1
+	fi
+}
+
+for i in {1..254}
+do
+	scan $i &
+done
