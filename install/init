@@ -28,7 +28,7 @@ read
 if [ ! -d "$bin" ]
 then
 	echo 'Cloning executable repository...'
-	git clone "git@github.com:Seldaiendil/Shell.git" "$bin"
+	git clone "git@github.com:amatiasq/Bin.git" "$bin"
 fi
 
 install="$run $bin/install"
