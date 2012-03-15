@@ -1,9 +1,19 @@
 #!/bin/bash
 
-if [ ! -f build ]
+dir=$(pwd)
+
+until [ -f "$dir/build" ] || [ "$dir" = "/" ]
+do
+	dir=$(dirname $dir)
+done
+
+
+if [ ! -f "$dir/build" ]
 then
 	echo "Not on a build system"
 	exit
 fi
 
-bash build $@
+echo -e "Running '$dir/build'...\n"
+bash $dir/build $@
+echo -e "\nDone"
