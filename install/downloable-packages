@@ -34,7 +34,7 @@ dpkg -i chrome.$$.deb >> $log
 
 echo "Installing Skype..."
 echo "    Dependences"
-apt-get install -y lib32stdc++6 lib32asound2 ia32-libs libc6-i386 libc6-i386 lib32gcc1
+apt-get -qq install -y lib32stdc++6 lib32asound2 ia32-libs libc6-i386 libc6-i386 lib32gcc1
 
 echo "    Downloading"
 wget -q -O skype.$$.deb http://download.skype.com/linux/skype-ubuntu_2.2.0.35-1_$arch.deb
