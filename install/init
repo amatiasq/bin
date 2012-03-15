@@ -37,10 +37,13 @@ sudo $run -c "
 	$install/basic-packages
 	$install/extra-repositories
 	$install/downloable-packages
+	$install/dart $HOME/apps
+	$install/configurations $HOME
+
+	echo 'Removing extra packages...'
+	sudo apt-get -qq autoremove
 "
 
-$install/dart $HOME/apps
 $install/repositories
-$install/configurations
 
 echo "DONE"

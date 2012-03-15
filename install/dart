@@ -17,6 +17,7 @@ cd "$target"
 
 echo "Installing Dart..."
 echo "    Dependences"
+sudo apt-get -qq -f install
 sudo apt-get -qq install -y libssl0.9.8
 echo "    Downloading"
 wget -q -O dart.$$.zip http://gsdview.appspot.com/dart-editor-archive-integration/latest/dart-linux.zip
