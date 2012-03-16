@@ -1,8 +1,18 @@
 #!/bin/bash
 
 host="$1"
+if [ -z "$host" ]
+then
+	echo "Usage: $0 <host>"
+	exit
+fi
 
-ssh-keygen -t rsa
+key=~/.ssh/id_rsa.pub
+if [ ! -f "$key" ]
+then
+		ssh-keygen -t rsa
+fi
+
 ssh $host mkdir -p .ssh
 cat ~/.ssh/id_rsa.pub | ssh $host 'cat >> .ssh/authorized_keys'
 ssh $host

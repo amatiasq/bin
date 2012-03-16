@@ -1,0 +1,25 @@
+#!/bin/sh -e
+
+extension="$1"
+root="$2"
+
+[ "$root" ] || root=.
+
+for i in $(find $root -type f -name "*.$extension")
+do
+    [ -w "$i" ] || { echo "El archivo $i no es modificable" >&2 ; exit 1 ; }
+
+    TEMPFILE=`mktemp`
+    cp "$root/.copyright" "$TEMPFILE"
+
+    if sed -n 2p "$i" | grep -qi Copyright
+    then
+        echo "File $i has copyright"
+        sed 1,3d "$i" >> "$TEMPFILE"
+    else
+        echo "File $i has not copyright"
+        cat "$i" >> "$TEMPFILE"
+    fi
+
+    mv -f "$TEMPFILE" "$i"
+done

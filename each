@@ -4,8 +4,9 @@ for i in $(ls)
 do
 	if [ -d "$i" ]
 	then
+		echo -e "\n-- Directory -- $i"
 		cd $i
-		$@
+		"$@"
 		cd ..
 	fi
 done
