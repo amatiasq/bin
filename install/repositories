@@ -2,7 +2,7 @@
 
 log="/dev/null"
 
-for project in "Dartmine" "Life" "LifeJS" "Selchi" "Sassmine"
+for project in "Dartmine" "Life" "LifeJS" "Selchi" "Sassmine" "NewJS"
 do
 	echo "Found project $project"
 	cd
