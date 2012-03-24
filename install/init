@@ -10,6 +10,7 @@ sudo apt-get -qq install -y git-core
 echo 'Configuring GIT...'
 git config --global user.name "A. Matías Quezada" > $log
 git config --global user.email "amatiasq@gmail.com" > $log
+git config --global color.ui auto
 
 
 rsa=~/.ssh/id_rsa.pub
