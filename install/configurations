@@ -16,7 +16,7 @@ function internal() {
 	do
 		if [ ! -d "$prefix/$dir" ]
 		then
-			echo "Creating dir $prefix/$dir"
+			#echo "Creating dir $prefix/$dir"
 			mkdir "$prefix/$dir"
 		fi
 	done
@@ -24,7 +24,7 @@ function internal() {
 	echo '    Copying files'
 	for file in $(find . -type f)
 	do
-		echo "Copying $file to $prefix/$file"
+		#echo "Copying $file to $prefix/$file"
 		cp "$file" "$prefix/$file"
 	done
 
