@@ -5,6 +5,8 @@ root="$2"
 
 [ "$root" ] || root=.
 
+#length=wc -l "$root/.copyright" | awk '{print $1}'
+
 for i in $(find $root -type f -name "*.$extension")
 do
     [ -w "$i" ] || { echo "El archivo $i no es modificable" >&2 ; exit 1 ; }
