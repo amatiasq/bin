@@ -1,5 +1,6 @@
 #!/bin/bash -e
 
+user=$(whoami)
 log=/dev/null
 bin=~/bin
 run="bash -e"
@@ -39,7 +40,7 @@ sudo $run -c "
 	$install/extra-repositories
 	$install/downloable-packages
 	$install/dart $HOME/apps
-	$install/configurations $HOME
+	$install/configurations $user
 
 	echo 'Removing extra packages...'
 	sudo apt-get -qq autoremove
