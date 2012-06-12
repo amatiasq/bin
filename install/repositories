@@ -2,7 +2,7 @@
 
 log="/dev/null"
 
-for project in "Dartmine" "Life" "LifeJS" "Selchi" "Sassmine" "Layout.js" "lib.js" "jsbase"
+for project in "Dartmine" "Life" "LifeJS" "Selchi" "Sassmine" "Layout.js" "lib.js" "jsbase" "mecha.js" "signature.js" "bio"
 do
 	echo "Found project $project"
 	cd
@@ -12,14 +12,8 @@ do
 	then
 		echo "    Cloning into $dir"
 		git clone "git@github.com:amatiasq/$project.git" "$dir" &> $log
-
-		if [ -f "$dir/.gitmodules" ]
-		then
-			echo "    Loading submodules"
-			cd "$dir"
-			git submodule init >> $log
-			git submodule update &>> $log
-		fi
+		cd "$dir"
+		git submodule update --init --recursive &> $log
 	fi
 done
 
