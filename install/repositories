@@ -2,7 +2,15 @@
 
 log="/dev/null"
 
-for project in "Dartmine" "Life" "LifeJS" "Selchi" "Sassmine" "Layout.js" "lib.js" "jsbase" "mecha.js" "signature.js" "bio"
+for project in \
+	"BRIAP" \
+	"Life" \
+	"LifeJS" \
+	"Selchi" \
+	"Sassmine" \
+	"jsbase" \
+	"signature.js" \
+	"bio"
 do
 	echo "Found project $project"
 	cd

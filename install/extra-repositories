@@ -21,15 +21,11 @@ echo "    MongoDB"
 echo "deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen" > /etc/apt/sources.list.d/nodejs.list
 apt-key adv --keyserver keyserver.ubuntu.com --recv 7F0CEB10 &>> $log
 
-echo "    Wakoopa"
-echo "deb http://apt.wakoopa.com all main" > /etc/apt/sources.list.d/wakoopa.list
-wget -q -O - http://apt.wakoopa.com/pubkey.txt | sudo apt-key add - &>> $log
-
 echo "Updating aptitude..."
 apt-get -qq update
 
 
 echo "Installing external packages..."
-apt-get -qq install -y nodejs nodejs-dev npm sublime-text-2 wakoopa clipit
+apt-get -qq install -y nodejs nodejs-dev npm sublime-text clipit
 
 echo "Done"
