@@ -22,7 +22,7 @@ cd /tmp
 echo "Installing Google Chrome..."
 
 echo "    Dependences"
-apt-get -qq install -y libcurl3 libnspr4-0d libnss3-1d libxss1
+apt-get -qq install -y libcurl3 libnspr4-0d libnss3-1d libxss1 libgconf2-4
 
 echo "    Downloading"
 wget -q -O chrome.$$.deb https://dl-ssl.google.com/linux/direct/google-chrome-stable_current_$arch.deb
