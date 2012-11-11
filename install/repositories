@@ -3,6 +3,7 @@
 log="/dev/null"
 
 for project in \
+	"lorelei" \
 	"BRIAP" \
 	"Life" \
 	"LifeJS" \
