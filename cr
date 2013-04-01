@@ -26,10 +26,12 @@ fi
 
 for i in $commits
 do
+	if [ "$i" = "$from" ]
+	then found=true
+	fi
+
 	if $found
 	then git show -w $i
-	elif [ "$i" = "$from" ]
-	then found=true
 	fi
 
 	echo "$i" > $storageFile
