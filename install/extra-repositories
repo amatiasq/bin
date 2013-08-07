@@ -26,6 +26,6 @@ apt-get -qq update
 
 
 echo "Installing external packages..."
-apt-get -qq install -y nodejs nodejs-dev npm sublime-text clipit
+apt-get -qq install -y nodejs sublime-text clipit
 
 echo "Done"

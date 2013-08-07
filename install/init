@@ -39,7 +39,6 @@ sudo $run -c "
 	$install/basic-packages
 	$install/extra-repositories
 	$install/downloable-packages
-	$install/dart $HOME/apps
 	$install/configurations $user
 
 	echo 'Removing extra packages...'
