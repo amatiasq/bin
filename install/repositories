@@ -3,15 +3,10 @@
 log="/dev/null"
 
 for project in \
-	"lorelei" \
-	"BRIAP" \
-	"Life" \
-	"LifeJS" \
-	"Selchi" \
-	"Sassmine" \
+	"glib" \
+	"promise" \
 	"jsbase" \
-	"signature.js" \
-	"bio"
+	"pomo"
 do
 	echo "Found project $project"
 	cd
@@ -20,7 +15,25 @@ do
 	if [ ! -d "$dir" ]
 	then
 		echo "    Cloning into $dir"
-		git clone "git@github.com:amatiasq/$project.git" "$dir" &> $log
+		git clone "https://github.com/amatiasq/$project.git" "$dir" &> $log
+		cd "$dir"
+		git submodule update --init --recursive &> $log
+	fi
+done
+
+for project in \
+	"desktop" \
+	"drive" \
+	"draw"
+do
+	echo "Found project LORELEI::$project"
+	cd
+	dir=~/repos/$project
+
+	if [ ! -d "$dir" ]
+	then
+		echo "    Cloning into $dir"
+		git clone "https://github.com/lorelei-group/$project.git" "$dir" &> $log
 		cd "$dir"
 		git submodule update --init --recursive &> $log
 	fi
