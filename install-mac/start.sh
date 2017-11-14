@@ -6,6 +6,7 @@ function run() {
 
 run dotfiles.sh
 run packages.sh
+run shell.sh
 run node.sh
 run repos.sh
 run applications.sh
