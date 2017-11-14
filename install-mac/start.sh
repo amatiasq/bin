@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
-INSTALL="$HOME/bin/install-mac/"
+function run() {
+  cat "$HOME/bin/install-mac/$1" | bash
+}
 
-$INSTALL/dotfiles.sh
-$INSTALL/packages.sh
-$INSTALL/repos.sh
+run dotfiles.sh
+run packages.sh
+run node.sh
+run repos.sh
+run applications.sh
