@@ -15,3 +15,8 @@ if [ $? -ne 0 ]; then
 fi
 
 $DOT config --local status.showUntrackedFiles no
+
+# Set post commit hook to push on commit
+HOOK="$HOME/.dotfiles-git/hooks/post-commit"
+echo `#!/bin/sh\ngit push origin master' > $HOOK
+chmod +x $HOOK
