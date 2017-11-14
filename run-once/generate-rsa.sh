@@ -1,4 +1,4 @@
-RSA=~/.ssh/id_rsa.pub
+RSA="$HOME/.ssh/id_rsa.pub"
 
 if [ ! -f $RSA ]
 then
@@ -8,4 +8,5 @@ fi
 
 cat $RSA > pbcopy
 cat $RSA
-echo -e '\nCopied to clipboard.'
+
+echo '\nCopied to clipboard.'
