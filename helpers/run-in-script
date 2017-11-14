@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+TMP_FILE=$(mktemp /tmp/abc-script.XXXXXX)
+echo '#!/bin/bash' > $TMP_FILE
+echo "$@" >> $TMP_FILE
+chmod +x $TMP_FILE
+$TMP_FILE
+rm $TMP_FILE

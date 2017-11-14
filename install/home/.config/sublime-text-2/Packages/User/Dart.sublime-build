@@ -1,3 +1,0 @@
-{
-	"cmd": ["dart", "--enable-type-checks", "/home/eyeos/Source/Dart/dartmine/specs/dartmine.internal.test.dart"]  //"$file"]
-}
