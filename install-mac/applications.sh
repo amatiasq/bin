@@ -18,10 +18,8 @@ brew cask install steam
 brew cask install minecraft
 
 # Utilities
+brew cask install alfred
 brew cask install keka
 brew cask install xscope
 brew cask install docker
 brew cask install now
-
-# Not in cask
-echo ">>>>>> Remember to install ClipMenu!!!"

@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+dothook disable
+
+savegame --no-push kerbal
+savegame --no-push minecraft
+savegame --no-push rimworld
+savegame --no-push the-cave
+
+# Alfred & iTerm
+$DOT add '.config'
+
+# VS Code
+$DOT add 'Library/Application Support/Code/User'
+
+# Sublime Text 3
+SUBLIME='Library/Application Support/Sublime Text 3/Packages/User'
+$DOT add "$SUBLIME"
+if [ -d "$SUBLIME/Package Control.cache" ]; then
+  $DOT reset "$SUBLIME/Package Control.cache"
+fi
+
+$DOT commit -am "Sync $(date +%d-%m-%Y) ($USER)"
+
+dothook enable

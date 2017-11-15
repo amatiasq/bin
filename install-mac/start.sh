@@ -10,3 +10,5 @@ run shell.sh
 run node.sh
 run repos.sh
 run applications.sh
+
+cat "$HOME/bin/install-mac/messages.md"
