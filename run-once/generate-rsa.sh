@@ -6,7 +6,7 @@ then
   ssh-keygen -t rsa -C "amatiasq@gmail.com" > /dev/null
 fi
 
-cat $RSA > pbcopy
+cat $RSA | pbcopy
 cat $RSA
 
 echo '\nCopied to clipboard.'
