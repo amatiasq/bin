@@ -12,7 +12,6 @@ brew tap caskroom/cask
 brew update
 
 # Install homebrew pacakges
-brew install caskroom/cask/brew-cask 2> /dev/null
 brew install the_silver_searcher
 brew insatll python3
 brew install zsh

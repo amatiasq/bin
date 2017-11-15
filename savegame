@@ -11,16 +11,16 @@ fi
 case "$GAME" in
 
   kerbal)
-    $DOT add 'Library/Application Support/Steam/steamapps/common/Kerbal Space Program/saves/por defecto';;
+    $DOT add "$HOME/Library/Application Support/Steam/steamapps/common/Kerbal Space Program/saves/por defecto";;
 
   minecraft)
-    $DOT add 'Library/Application Support/minecraft/saves/';;
+    $DOT add "$HOME/Library/Application Support/minecraft/saves/";;
 
   rimworld)
-    $DOT add 'Library/Application Support/RimWorld/Saves/';;
+    $DOT add "$HOME/Library/Application Support/RimWorld/Saves/";;
 
   the-cave)
-    $DOT add 'Library/Application Support/Doublefine/TheCave/76561198058830888/';;
+    $DOT add "$HOME/Library/Application Support/Doublefine/TheCave/76561198058830888/";;
 
   *)
     echo "Valid arguments:"
