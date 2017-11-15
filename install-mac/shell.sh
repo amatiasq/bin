@@ -12,3 +12,5 @@ git clone https://github.com/powerline/fonts.git --depth=1 && \
   ./install.sh && \
   cd .. && \
   rm -rf fonts
+
+$HOME/Applications/sleepwatcher_2.2/install.sh
