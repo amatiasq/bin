@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+
+GAME="$1"
+
+case "$GAME" in
+
+  kerbal)
+    $DOT add 'Library/Application Support/Steam/steamapps/common/Kerbal Space Program/saves/por defecto'
+    ;;
+
+  *)
+    echo "Valid arguments:"
+    echo "  - kerbal"
+    exit 1
+
+esac
+
+
+$DOT commit -m "Savegame: $GAME"
+$DOT push
