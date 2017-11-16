@@ -1,4 +1,13 @@
 #!/usr/bin/env bash
+DOT="git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME"
+ERRORS=$($DOT pull 2>&1)
+
+if [ $? -ne 0 ]; then
+    echo 'Error running git'
+    echo $ERRORS
+    echo "$(date): $ERRORS" >> "$HOME/Desktop/dot.log"
+    exit 1
+fi
 
 dothook disable
 
@@ -20,8 +29,11 @@ if [ -d "$SUBLIME/Package Control.cache" ]; then
   $DOT reset "$SUBLIME/Package Control.cache"
 fi
 
-if $DOT commit -am "Sync $(date +%d-%m-%Y) ($USER)"; then
-  $DOT push
-fi
+$DOT commit -am "Sync $(date +%d-%m-%Y) ($USER)"
+$DOT push
+
+# if $DOT commit -am "Sync $(date +%d-%m-%Y) ($USER)"; then
+#   $DOT push
+# fi
 
 dothook enable
