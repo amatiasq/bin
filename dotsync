@@ -18,6 +18,9 @@ savegame --no-push the-cave
 
 # Alfred & iTerm
 $DOT add "$HOME/.config"
+if [ -d "$HOME/.config/configstore" ]; then
+    $DOT reset "$HOME/.config/configstore"
+fi
 
 # VS Code
 $DOT add "$HOME/Library/Application Support/Code/User"
