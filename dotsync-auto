@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-date >> ~/Desktop/test.txt
-
 TMP_FILE=$(mktemp /tmp/abc-script.XXXXXX)
 LOG="$HOME/dotsync-log.txt"
 ERROR="$HOME/Desktop/dotsync-errors.txt"

@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 
+DOT=$($HOME/bin/helpers/dot.sh)
 GAME="$1"
 PUSH=true
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-DOT="git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME"
+DOT=$($HOME/bin/helpers/dot.sh)
 
 function gitignore() {
   $HOME/bin/helpers/read-gitignore.sh "$1" $HOME/.dotinclude
@@ -14,12 +14,12 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
-dothook disable
+$HOME/bin/dothook disable
 
-savegame --no-push kerbal
-savegame --no-push minecraft
-savegame --no-push rimworld
-savegame --no-push the-cave
+$HOME/bin/savegame --no-push kerbal
+$HOME/bin/savegame --no-push minecraft
+$HOME/bin/savegame --no-push rimworld
+$HOME/bin/savegame --no-push the-cave
 
 # Include paths in .dotinclude
 while read path; do
@@ -33,7 +33,7 @@ while read path; do
   fi
 done < <(gitignore exclude)
 
-$DOT commit -am "Sync $(date +%d-%m-%Y) ($USER)"
+$DOT commit -am "Sync $(date +%d-%m-%Y) ($USER)" > /dev/null
 $DOT push
 
-dothook enable
+$HOME/bin/dothook enable
