@@ -3,3 +3,5 @@
 nvm install stable
 nvm install lts/*
 nvm use stable
+
+npm install -g eslint
