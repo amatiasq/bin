@@ -1,27 +1,29 @@
 #!/usr/bin/env bash
 
-REPOS="$HOME/repos"
+$DOT submodule update --init --recursive
 
-mkdir $REPOS && cd $REPOS
+# REPOS="$HOME/repos"
 
-function clone() {
-  git clone git@github.com:amatiasq/$1
-}
+# mkdir $REPOS && cd $REPOS
 
-clone amatiasq.github.io
-clone notes
+# function clone() {
+#   git clone git@github.com:amatiasq/$1 $REPOS/$1
+# }
 
-clone amq-tools
-clone jsbase
-clone glib
-clone lulas
-clone pathfinding
+# clone amatiasq.github.io
+# clone notes
 
-clone import-sort
-clone vsc-sort-imports
-clone import-sort-style-module-compact
+# clone amq-tools
+# clone jsbase
+# clone glib
+# clone lulas
+# clone pathfinding
 
-clone wMUD
-clone term
-clone streams
-clone signature.js
+# clone import-sort
+# clone vsc-sort-imports
+# clone import-sort-style-module-compact
+
+# clone wMUD
+# clone term
+# clone streams
+# clone signature.js
