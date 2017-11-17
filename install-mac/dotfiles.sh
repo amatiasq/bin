@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 
-DOT="git --git-dir=$HOME/.dotfiles-git/ --work-tree=$HOME"
+DOT=$($HOME/bin/helpers/dot.sh)
 
 echo ".dotfiles-git" >> "$HOME/.gitignore"
 
-git clone --bare git@github.com:amatiasq/dotfiles $HOME/.dotfiles-git
+git clone --bare --depth=1 git@github.com:amatiasq/dotfiles $HOME/.dotfiles-git
 
 $DOT checkout
 
@@ -15,6 +15,7 @@ if [ $? -ne 0 ]; then
 fi
 
 $DOT config --local status.showUntrackedFiles no
+$DOT fetch --unshallow > .dotfetch.log &
 
 # Set post commit hook to push on commit
 HOOK="$HOME/.dotfiles-git/hooks/post-commit"
