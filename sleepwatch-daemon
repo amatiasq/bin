@@ -1,9 +1,0 @@
-#!/usr/bin/env bash
-
-PLIST="$HOME/Library/LaunchAgents/de.bernhard-baehr.sleepwatcher.plist"
-
-cp $HOME/Applications/sleepwatcher_2.2/config/de.bernhard-baehr.sleepwatcher.plist "$PLIST"
-
-launchctl unload "$PLIST" 2> /dev/null
-launchctl load "$PLIST"
-launchctl stop "$PLIST"
