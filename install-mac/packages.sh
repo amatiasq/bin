@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-# Copy dotfiles
-
 # Instal Homebrew
 /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
@@ -17,6 +15,9 @@ brew insatll python3
 brew install zsh
 brew install wget
 brew install hub
+brew install jq
+brew install watch
+brew install docker
 
 # NVM is a special case
 brew install nvm
