@@ -1,11 +1,10 @@
-# Then in another terminal execute this:
 choco install googlechrome -y
 choco install firefox -y
 choco install spotify -y
 choco install slack -y
 choco install steam -y
 
-# choco install clipclip -y -- not part of chocolatey packages
+choco install ditto -y
 choco install greenshot -y
 choco install nodejs -y
 choco install docker-desktop -y
