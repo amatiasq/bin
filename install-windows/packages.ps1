@@ -18,3 +18,4 @@ choco install visualstudio2017community -y
 choco install octave -y
 choco install blender -y
 choco install magicavoxelviewer -y
+choco install freecad -y
