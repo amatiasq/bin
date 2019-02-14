@@ -11,8 +11,16 @@ sudo apt -qq install -y git
 
 echo "Cloning amatiasq/bin"
 cd /tmp
-git clone https://github.com/amatiasq/bin
+
+if [ ! -d bin ]
+then
+  git clone https://github.com/amatiasq/bin
+fi
+
 cd bin/install/linux
+
+# Cloning with HTTPS permissions get lost
+find . -name '*.sh' | xargs chmod +x
 
 ./drivers.sh
 ./repos.sh
