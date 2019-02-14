@@ -1,0 +1,1 @@
+choco install googlechrome ditto lastpass greenshot nodejs firefox spotify steam vscode sublimetext3 notepadplusplus gitkraken slack visualstudio2017community docker-desktop octave blender freecad magicavoxelviewer -y
