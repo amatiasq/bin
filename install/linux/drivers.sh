@@ -6,9 +6,9 @@ echo "Drivers..."
 if lspci | grep "NVIDIA" > /dev/null
 then
   echo "    NVIDIA"
-  add-apt-repository ppa:graphics-drivers/ppa
-  apt -qq update
-  apt -qq install -y nvidia-390
+  sudo add-apt-repository ppa:graphics-drivers/ppa
+  sudo apt -qq update
+  sudo apt -qq install -y nvidia-390
 fi
 
 echo "    Done"
