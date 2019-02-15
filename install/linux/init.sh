@@ -7,20 +7,20 @@
 # fi
 
 echo "Installing git"
-sudo apt -qq install -y git
+sudo apt -qq install -y git > /tmp/bin/install.log 2>&1
 
 echo "Cloning amatiasq/bin"
 cd /tmp
 
 if [ ! -d bin ]
 then
-  git clone https://github.com/amatiasq/bin
+  git clone https://github.com/amatiasq/bin > /tmp/bin/install.log 2>&1
 fi
 
 cd bin/install/linux
 
 # Cloning with HTTPS permissions get lost
-find . -name '*.sh' | xargs chmod +x
+find . -name '*.sh' | xargs chmod +x > /tmp/bin/install.log 2>&1
 
 ./drivers.sh
 ./repos.sh

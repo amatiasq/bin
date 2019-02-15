@@ -13,10 +13,10 @@ cat ~/.ssh/id_rsa.pub
 
 if which xdg-open > /dev/null
 then
-  xdg-open "$GH_KEYS"
+  xdg-open "$GH_KEYS" > /tmp/bin/install.log 2>&1
 elif which gnome-open > /dev/null
 then
-  gnome-open "$GH_KEYS"
+  gnome-open "$GH_KEYS" > /tmp/bin/install.log 2>&1
 fi
 
 read -p 'Press [Enter] key to continue...' -s
