@@ -1,6 +1,6 @@
 amatiasq/notes
 amatiasq/blog
-amatiasq/vcs-sort-imports
+amatiasq/vsc-sort-imports
 amatiasq/lulas
 amatiasq/modular-cells
 amatiasq/catastrophe
