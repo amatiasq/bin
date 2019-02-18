@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# TODO: Add SSH key to Github
+
 echo "Conning bin..."
 git clone git@github.com:amatiasq/bin ~/bin > /tmp/bin/install.log 2>&1
 
