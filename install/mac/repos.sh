@@ -1,7 +1,7 @@
 #!/bin/bash
 
-echo "Conning bin..."
-git clone git@github.com:amatiasq/bin ~/bin
+# echo "Conning bin..."
+# git clone git@github.com:amatiasq/bin ~/bin
 
 mkdir -p ~/repos
 cd ~/repos
