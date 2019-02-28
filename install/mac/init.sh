@@ -12,4 +12,4 @@ read < /dev/tty
 
 git clone git@github.com:amatiasq/bin $HOME/bin
 
-$HOME/bin/install-mac/start.sh
+$HOME/bin/install/mac/start.sh
