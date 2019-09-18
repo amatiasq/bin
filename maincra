@@ -1,0 +1,3 @@
+#!/bin/bash
+
+ssh-amatiasq.com docker logs minecraft -f
