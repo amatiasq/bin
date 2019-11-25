@@ -1,3 +1,3 @@
-#!/bin/bash
+#!/bin/sh
 
-ssh-amatiasq.com docker logs minecraft -f
+ssh amatiasq@51.91.56.19 "bin/maincra '$1'"

@@ -17,6 +17,7 @@ brew install hub
 brew install jq
 brew install watch
 brew install docker
+brew install youtube-dl
 
 # NVM is a special case
 brew install nvm
