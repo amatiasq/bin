@@ -10,14 +10,17 @@ brew tap caskroom/cask
 brew update
 
 # Install homebrew pacakges
-brew insatll python3
+brew install deno
+brew install python3
 brew install zsh
 brew install wget
 brew install hub
 brew install jq
 brew install watch
 brew install docker
+brew install imagemagick
 brew install youtube-dl
+brew install exiftool
 
 # NVM is a special case
 brew install nvm

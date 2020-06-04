@@ -2,9 +2,9 @@
 
 DOT=$($HOME/bin/helpers/dot.sh)
 
-echo ".dotfiles-git" >> "$HOME/.gitignore"
+echo ".dot" >> "$HOME/.gitignore"
 
-git clone --bare --depth=1 git@github.com:amatiasq/dotfiles $HOME/.dotfiles-git
+git clone --bare --depth=1 git@github.com:amatiasq/dotfiles $HOME/.dot
 
 $DOT checkout
 
@@ -18,7 +18,7 @@ $DOT config --local status.showUntrackedFiles no
 $DOT fetch --unshallow > .dotfetch.log &
 
 # Set post commit hook to push on commit
-HOOK="$HOME/.dotfiles-git/hooks/post-commit"
+HOOK="$HOME/.dot/hooks/post-commit"
 echo '#!/bin/sh' > $HOOK
 echo 'git push origin master' >> $HOOK
 chmod +x $HOOK
