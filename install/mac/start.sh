@@ -7,6 +7,7 @@ function run() {
 run dotfiles.sh
 run packages.sh
 run shell.sh
+run deno.sh
 run node.sh
 run python.sh
 run repos.sh
