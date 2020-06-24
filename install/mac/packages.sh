@@ -21,6 +21,7 @@ brew install docker
 brew install imagemagick
 brew install youtube-dl
 brew install exiftool
+brew install asciinema
 
 # NVM is a special case
 brew install nvm
