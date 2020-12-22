@@ -1,13 +1,28 @@
 #!/bin/bash
 
 function scan() {
-	if ping -c 1 192.168.1.$1 > /dev/null
+	if ping -c 1 192.168.$1 > /dev/null
 	then
-		echo 192.168.1.$1
+		echo 192.168.$1
 	fi
 }
 
+function scanPort() {
+	if curl -c 1 192.168.$1:$2 > /dev/null 2>&1
+	then
+		echo 192.168.$1
+	fi
+}
+
+SUBNET="$1"
+PORT="$2"
+
 for i in {1..254}
 do
-	scan $i &
+	if [ -z "$PORT" ]
+	then
+		scan "$SUBNET.$i" &
+	else
+		scanPort "$SUBNET.$i" "$PORT" &
+	fi
 done
