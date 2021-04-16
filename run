@@ -1,0 +1,16 @@
+#!/bin/bash -e
+
+if [ -f package.json ]
+then
+  npm run start -- "$@"
+  exit 0
+fi
+
+if [ -f *.csproj ] || [ -f *.fsproj ]
+then
+  dotnet run "$@"
+  exit 0
+fi
+
+echo "Could not find any project type"
+exit 1
