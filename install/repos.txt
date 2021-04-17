@@ -7,3 +7,15 @@ amatiasq/taleza
 amatiasq/genara
 amatiasq/constitucion-espanola
 Hoijof/nozombie
+
+amatiasq/np
+amatiasq/term
+amatiasq/ml-pose-detection
+amatiasq/ml-object-detection
+amatiasq/deno
+amatiasq/chatbot-with-voice
+amatiasq/zeus
+amatiasq/mud
+amatiasq/amq-libs
+amatiasq/susy
+amatiasq/jsFramework
