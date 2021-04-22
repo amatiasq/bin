@@ -18,10 +18,16 @@ brew install wget
 brew install jq
 brew install watch
 #brew install docker
-4brew install imagemagick
+#brew install imagemagick
 #brew install youtube-dl
 #brew install exiftool
 brew install asciinema
+brew install obs
+brew install firefox
+brew install loopback
+brew install paragon-ntfs
+brew install zoom
+brew install thefuck
 
 # NVM is a special case
 brew install nvm
