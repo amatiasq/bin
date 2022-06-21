@@ -1,0 +1,8 @@
+#!/bin/bash
+
+for i in $(git branch -r | grep -v HEAD)
+do
+  # echo git show --format='%ai' --no-patch $i
+  DATE=$(git show --format='%ai' --no-patch $i)
+  echo "$DATE $i"
+done | sort

@@ -14,6 +14,14 @@ function scanPort() {
 	fi
 }
 
+if [ -z "$1" ]
+then
+	echo Usage:
+	echo 	"$0 <port>"
+	echo 	"$0 <subnet> <port>"
+	exit 1
+fi
+
 SUBNET="$1"
 PORT="$2"
 

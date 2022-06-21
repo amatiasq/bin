@@ -1,0 +1,15 @@
+#!/bin/bash -e
+
+cmd=$@;
+
+for i in $(ls)
+do
+	if [ -d "$i" ]
+	then
+		echo -e "\n-- Directory -- $i"
+		cd $i
+		echo $cmd
+		eval $cmd
+		cd ..
+	fi
+done
