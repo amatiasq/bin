@@ -4,6 +4,7 @@
 brew install --cask brave-browser
 brew install --cask iterm2
 brew install --cask sublime-text
+brew install --cask 1password
 
 # Development
 brew install --cask visual-studio-code

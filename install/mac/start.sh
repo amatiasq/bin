@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 function run() {
-  cat "$HOME/bin/install/mac/$1" | bash
+  bash "$HOME/bin/install/mac/$1"
 }
 
 run dotfiles.sh
