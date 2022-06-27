@@ -4,7 +4,7 @@
 
 git --version > /dev/null
 
-curl https://raw.githubusercontent.com/amatiasq/bin/master/run-once/generate-rsa.sh | bash -e
+curl https://raw.githubusercontent.com/amatiasq/bin/master/run-once/generate-rsa.sh
 
 echo 'Add key to Github, press [Enter] when done.'
 open 'https://github.com/settings/ssh'

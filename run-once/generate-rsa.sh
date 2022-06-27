@@ -1,3 +1,5 @@
+#!/bin/bash -e
+
 RSA="$HOME/.ssh/id_rsa.pub"
 
 if [ ! -f $RSA ]
