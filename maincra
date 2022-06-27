@@ -1,3 +1,0 @@
-#!/bin/sh
-
-ssh amatiasq@51.91.56.19 "bin/maincra '$1'"

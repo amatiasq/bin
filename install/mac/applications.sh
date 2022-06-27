@@ -1,41 +1,30 @@
 #!/usr/bin/env bash
 
 # Basic tools
-brew install google-chrome
-brew install iterm2
-brew install sublime-text
+brew install --cask brave-browser
+brew install --cask iterm2
+brew install --cask sublime-text
 
 # Development
-brew install visual-studio-code
-brew install teamviewer
-#brew install skype
-brew install slack
-#brew install parallels
-#brew install poedit
+brew install --cask visual-studio-code
+brew install --cask google-chrome
+brew install --cask firefox
 
 # Entretainment
-brew install spotify
-brew install vlc
-brew install steam
-brew install minecraft
+brew install --cask spotify
+brew install --cask vlc
+brew install --cask steam
+brew install --cask minecraft
 
 # Utilities
-brew install alfred
-brew install keka
-brew install xscope
-#brew install docker
+brew install --cask raycast
+brew install --cask keka
+brew install --cask xscope
+brew install --cask docker
 
-# foo
-brew install blender
-brew install brave-browser
-brew install calibre
-brew install discord
-#brew install postman
-brew install processing
-brew install virtualbox
-#brew install visual-studio
-brew install calibre
-
-# cacher
-# inkdrop
-# diskopolis
+# Other
+brew install --cask calibre
+brew install --cask discord
+brew install --cask obs
+brew install --cask loopback
+brew install --cask paragon-ntfs

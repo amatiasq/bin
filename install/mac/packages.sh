@@ -10,24 +10,15 @@ brew tap homebrew/cask
 brew update
 
 # Install homebrew pacakges
-brew install deno
-brew install python3
-brew install zsh
-brew install wget
-#brew install hub
-brew install jq
-brew install watch
-#brew install docker
-#brew install imagemagick
-#brew install youtube-dl
-#brew install exiftool
 brew install asciinema
-brew install obs
-brew install firefox
-brew install loopback
-brew install paragon-ntfs
-brew install zoom
+brew install deno
+brew install imagemagick
+brew install jq
 brew install thefuck
+brew install watch
+brew install wget
+brew install youtube-dl
+brew install zsh
 
 # NVM is a special case
 brew install nvm
