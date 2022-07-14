@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# @raycast.schemaVersion 1
+# @raycast.title Displays: Restore order for work
+# @raycast.mode silent
+
+displayplacer "id:952D9CC9-D46B-0B99-53FA-C41E1D7706B5 res:1680x1050 color_depth:4 scaling:on origin:(0,0) degree:0" "id:ED61CFA3-165E-4A21-2F94-B100084444A1 res:1080x1920 hz:60 color_depth:8 scaling:off origin:(3600,-840) degree:90" "id:0000410C-0000-08CC-0000-0CEE00000000 res:1920x1200 hz:60 color_depth:4 scaling:off origin:(1680,-1200) degree:0" "id:00004C2D-0000-0D20-4357-413400000000 res:1920x1080 hz:60 color_depth:4 scaling:off origin:(1680,0) degree:0"
+
+afplay /System/Library/Sounds/Basso.aiff

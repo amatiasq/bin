@@ -23,3 +23,6 @@ brew install zsh
 # NVM is a special case
 brew install nvm
 mkdir ~/.nvm
+
+brew tap jakehilborn/jakehilborn \
+  && brew install displayplacer
