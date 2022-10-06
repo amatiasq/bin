@@ -1,0 +1,48 @@
+#!/bin/bash -e
+
+TYPE='users'
+
+function usage() {
+  echo "Usage: $0 [-o] <name>"
+  echo "  -o --org: This is an organization, not an user"
+}
+
+while [[ $# -gt 0 ]]; do
+  case $1 in
+    -o|--org)
+      TYPE='orgs'
+      shift
+      ;;
+    -*|--*)
+      echo "Unknown option $1"
+      usage
+      exit 1
+      ;;
+    *)
+      POSITIONAL_ARGS+=("$1") # save positional arg
+      shift
+      ;;
+  esac
+done
+
+set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
+
+USERNAME="$1"
+PARAMS='per_page=100&type=all&sort=updated&direction=desc'
+
+AUTH="Authorization: none"
+
+if [ ! -z "$GITHUB_TOKEN" ]
+then
+  AUTH="Authorization: Bearer $GITHUB_TOKEN"
+fi
+
+for i in $(
+  curl \
+    -H "Accept: application/vnd.github+json" -H "$AUTH" \
+    "https://api.github.com/$TYPE/$USERNAME/repos?$PARAMS" \
+    2>/dev/null \
+    | jq -r '.[].ssh_url'
+); do
+  git clone $i
+done

@@ -7,9 +7,9 @@ function run() {
 run dotfiles.sh
 run packages.sh
 run shell.sh
+run applications.sh
+run repos.sh
 run deno.sh
 run node.sh
-run repos.sh
-run applications.sh
 
 cat "$HOME/bin/install/mac/messages.md"

@@ -1,0 +1,42 @@
+#!//bin/sh -e
+
+# extract_app='/System/Library/CoreServices/Applications/Archive Utility.app'
+
+# dir='/Volumes/home/TAKEOUT'
+# id='20220922T065118Z'
+# extension='.tgz'
+
+# target_dir='/Users/amatiasq/Documents/TAKEOUT'
+
+# for i in {3..29}
+# do
+#   pad_left="00${i}"
+#   number="${pad_left: -3}"
+
+#   source="${dir}/takeout-${id}-${number}${extension}"
+#   target="${target_dir}/${number}${extension}"
+
+
+#   echo $source
+#   open -W "$extract_app" "$source"
+#   rm "$source"
+
+#   # uncompressed="${target_dir}/${number}"
+
+#   # # echo "Copying ${number}..."
+#   # echo cp -v "$source" "$target"
+#   # # echo "Uncompressing ${number}..."
+#   # echo open -W '/System/Library/CoreServices/Applications/Archive Utility.app' "$target"
+#   # # echo "Deleting ${number}..."
+#   # echo rm "$target"
+#   # # echo "Done ${number}."
+# done
+
+
+
+# for i in {4..29}
+# do
+#   dir="Takeout $i"
+#   cp -r "$dir/" Takeout
+#   rm -r "$dir"
+# done

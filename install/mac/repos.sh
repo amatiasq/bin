@@ -1,15 +1,20 @@
 #!/bin/bash
 
-# echo "Conning bin..."
-# git clone git@github.com:amatiasq/bin ~/bin
+echo "Give me a Github access token with access to private repos..."
+echo "[press INTRO to skip]"
+open https://github.com/settings/tokens
+read token
+
+export GITHUB_TOKEN="$token"
 
 mkdir -p ~/repos
 cd ~/repos
 
-for repo in $(cat ~/bin/install/repos.txt)
-do
-  echo "Cloning $repo..."
-  git clone "git@github.com:$repo"
-done
+$HOME/bin/clone-all-repos amatiasq
+
+mkdir -p ~/primer
+cd ~/primer
+
+$HOME/bin/clone-all-repos Primer-Learning --org
 
 echo "Done"

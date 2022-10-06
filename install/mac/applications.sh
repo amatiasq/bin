@@ -2,14 +2,17 @@
 
 # Basic tools
 brew install --cask brave-browser
+brew install --cask 1password
 brew install --cask iterm2
 brew install --cask sublime-text
-brew install --cask 1password
 
 # Development
 brew install --cask visual-studio-code
 brew install --cask firefox
 brew install --cask google-chrome
+brew install --cask unity-hub
+brew install --cask blender
+# brew install latex # doesn't exist
 
 # Utilities
 brew install --cask raycast
@@ -25,6 +28,5 @@ brew install --cask xscope
 brew install --cask discord
 brew install --cask minecraft
 brew install --cask spotify
-brew install --cask starcraft
 brew install --cask steam
 brew install --cask vlc

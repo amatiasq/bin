@@ -1,0 +1,9 @@
+#!/bin/bash
+
+cd $HOME/repos
+
+for i in *
+do
+  echo cd $i
+  echo git pull --all
+done
