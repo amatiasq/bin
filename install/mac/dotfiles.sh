@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+#!/usr/bin/env bash -e
 
 DOT=$($HOME/bin/helpers/dot.sh)
 
