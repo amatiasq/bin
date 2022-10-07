@@ -4,6 +4,7 @@ cd $HOME/repos
 
 for i in *
 do
-  echo cd $i
-  echo git pull --all
+  cd $i
+  git pull --all
+  cd ..
 done
