@@ -12,6 +12,7 @@ brew update
 # Install homebrew pacakges
 brew install asciinema
 brew install deno
+brew install git-lfs
 brew install imagemagick
 brew install jq
 brew install thefuck
@@ -26,3 +27,6 @@ mkdir ~/.nvm
 
 brew tap jakehilborn/jakehilborn \
   && brew install displayplacer
+
+brew tap microsoft/git \
+  && brew install --cask git-credential-manager-core
