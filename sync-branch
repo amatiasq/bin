@@ -1,0 +1,17 @@
+#!/bin/bash -e
+
+BASE_BRANCH="$1"
+CURRENT_BRANCH=$(git branch --show-current)
+
+if [ -z "$BASE_BRANCH" ]
+then
+  echo "Usage: pull-and-rebase <base-branch>"
+  exit 1
+fi
+
+git pull origin "$CURRENT_BRANCH" || true
+git checkout "$BASE_BRANCH"
+git pull origin "$BASE_BRANCH"
+git checkout "$CURRENT_BRANCH"
+git rebase "$BASE_BRANCH"
+git push origin "$CURRENT_BRANCH" --force

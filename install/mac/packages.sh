@@ -25,6 +25,9 @@ brew install zsh
 brew install nvm
 mkdir ~/.nvm
 
+brew tap joerdav/xc \
+  && brew install xc
+
 brew tap jakehilborn/jakehilborn \
   && brew install displayplacer
 
