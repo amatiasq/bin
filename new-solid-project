@@ -1,0 +1,16 @@
+#!/bin/bash -e
+
+if [ -z "$1" ]; then
+  echo "Usage: new-solid-project <project-name>"
+  exit 1
+fi
+
+git clone git@github.com:amatiasq/vite-solidjs-typescript-boilerplate.git "$1"
+
+cd "$1"
+
+npm i
+
+echo "npm run dev"
+
+code .
