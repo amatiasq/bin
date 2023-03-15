@@ -1,7 +1,7 @@
 #!/bin/bash -e
 
 if [ -z "$1" ]; then
-  echo "Usage: new-solid-project <project-name>"
+  echo "Usage: $0 <project-name>"
   exit 1
 fi
 

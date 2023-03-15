@@ -12,5 +12,11 @@ then
   exit 0
 fi
 
+if [ -f Cargo.toml ]
+then
+  trunk serve
+  exit 0
+fi
+
 echo "Could not find any project type"
 exit 1

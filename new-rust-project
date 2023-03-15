@@ -1,0 +1,14 @@
+#!/bin/bash -e
+
+if [ -z "$1" ]; then
+  echo "Usage: $0 <project-name>"
+  exit 1
+fi
+
+cargo generate --git https://github.com/yewstack/yew-trunk-minimal-template
+
+cd "$1"
+
+echo "trunk serve"
+
+code .
