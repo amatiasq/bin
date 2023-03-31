@@ -20,6 +20,7 @@ brew install watch
 brew install wget
 brew install youtube-dl
 brew install zsh
+brew install fzf
 
 # NVM is a special case
 brew install nvm
