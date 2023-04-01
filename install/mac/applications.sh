@@ -37,7 +37,7 @@ brew install --cask vlc
 brew install --cask blender
 brew install --cask openscad
 
-# Veracrypt requires osxfuse
+# Veracrypt (requires osxfuse)
 brew install --cask veracrypt
 cd ~/Downloads
 wget https://github.com/osxfuse/osxfuse/releases/download/macfuse-4.4.2/macfuse-4.4.2.dmg
