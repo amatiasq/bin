@@ -1,48 +1,38 @@
 #!/bin/bash -e
+# Thanks ChatGPT
 
-TYPE='users'
+# Prompt user for Github username and access token
+read -p "Enter Github username: " GITHUB_USERNAME
+read -sp "Enter Github access token: " GITHUB_TOKEN
 
-function usage() {
-  echo "Usage: $0 [-o] <name>"
-  echo "  -o --org: This is an organization, not an user"
-}
+# Set up variables for pagination
+PAGE=1
+PER_PAGE=100
+HAS_NEXT_PAGE=true
 
-while [[ $# -gt 0 ]]; do
-  case $1 in
-    -o|--org)
-      TYPE='orgs'
-      shift
-      ;;
-    -*|--*)
-      echo "Unknown option $1"
-      usage
-      exit 1
-      ;;
-    *)
-      POSITIONAL_ARGS+=("$1") # save positional arg
-      shift
-      ;;
-  esac
+# Loop through pages of repositories
+while [ "${HAS_NEXT_PAGE}" == true ]
+do
+  # Construct API endpoint URL with pagination parameters
+  API_URL="https://api.github.com/users/${GITHUB_USERNAME}/repos?page=${PAGE}&per_page=${PER_PAGE}"
+
+  # Get repositories for the current page using the Github API
+  REPOS=$(curl -s -H "Authorization: token ${GITHUB_TOKEN}" ${API_URL})
+
+  # If the API response has an empty array of repositories, we've reached the end of the list
+  if [ "${REPOS}" == "[]" ]; then
+    HAS_NEXT_PAGE=false
+  else
+    # Loop through each repository and clone it
+    for repo in $(echo "${REPOS}" | jq -r '.[].clone_url')
+    do
+      git clone "${repo}"
+    done
+
+    # Move on to the next page of repositories
+    PAGE=$((PAGE+1))
+  fi
 done
 
-set -- "${POSITIONAL_ARGS[@]}" # restore positional parameters
-
-USERNAME="$1"
-PARAMS='per_page=100&type=all&sort=updated&direction=desc'
-
-AUTH="Authorization: none"
-
-if [ ! -z "$GITHUB_TOKEN" ]
-then
-  AUTH="Authorization: Bearer $GITHUB_TOKEN"
-fi
-
-for i in $(
-  curl \
-    -H "Accept: application/vnd.github+json" -H "$AUTH" \
-    "https://api.github.com/$TYPE/$USERNAME/repos?$PARAMS" \
-    2>/dev/null \
-    | jq -r '.[].ssh_url'
-); do
-  git clone $i
-done
+# Done!
+echo "All repositories have been cloned."
