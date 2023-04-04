@@ -34,3 +34,6 @@ brew tap jakehilborn/jakehilborn \
 
 brew tap microsoft/git \
   && brew install --cask git-credential-manager-core
+
+# SurrealDB
+curl --proto '=https' --tlsv1.2 -sSf https://install.surrealdb.com | sh
