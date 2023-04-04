@@ -26,6 +26,12 @@ do
     # Loop through each repository and clone it
     for repo in $(echo "${REPOS}" | jq -r '.[].clone_url')
     do
+      # Thanks Copilot
+      if [ -d "${repo##*/}" ]; then
+        echo "Skipping ${repo##*/} because it already exists."
+        continue
+      fi
+
       git clone "${repo}"
     done
 
