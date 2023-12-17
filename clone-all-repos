@@ -20,19 +20,19 @@ do
   REPOS=$(curl -s -H "Authorization: token ${GITHUB_TOKEN}" ${API_URL})
 
   # If the API response has an empty array of repositories, we've reached the end of the list
-  if [ "${REPOS}" == "[]" ]; then
+  if [ "$REPOS" == "[]" ]; then
     HAS_NEXT_PAGE=false
   else
     # Loop through each repository and clone it
-    for repo in $(echo "${REPOS}" | jq -r '.[].clone_url')
+    for repo in $(echo "$REPOS" | jq -r '.[].clone_url')
     do
       # Thanks Copilot
-      if [ -d "${repo##*/}" ]; then
-        echo "Skipping ${repo##*/} because it already exists."
+      if [ -d "$repo" ]; then
+        echo "Skipping $repo because it already exists."
         continue
       fi
 
-      git clone "${repo}"
+      git clone "$repo"
     done
 
     # Move on to the next page of repositories

@@ -12,6 +12,8 @@ brew update
 # Install homebrew pacakges
 brew install asciinema
 brew install deno
+brew install ffmpeg
+brew install fzf
 brew install git-lfs
 brew install imagemagick
 brew install jq
@@ -20,11 +22,13 @@ brew install watch
 brew install wget
 brew install youtube-dl
 brew install zsh
-brew install fzf
 
 # NVM is a special case
 brew install nvm
 mkdir ~/.nvm
+
+brew tap samwho/spacer \
+  && brew install spacer
 
 brew tap joerdav/xc \
   && brew install xc

@@ -1,14 +1,57 @@
 #!/bin/bash -e
 
+function use-nvm-rc() {
+  if [ -f .nvmrc ]
+  then
+    source $(brew --prefix nvm)/nvm.sh
+    nvm install $(cat .nvmrc)
+  fi
+}
+
+function run-js() {
+  binary="$1"
+  [ -d node_modules ] || "$binary" install
+  "$binary" run "$command" -- $@
+}
+
+command="$1"
+
+if [ -z "$command" ]
+then
+  if grep -q '"dev":' package.json
+  then
+    command="dev"
+  elif grep -q '"start":' package.json
+  then
+    command="start"
+  fi
+else
+  shift
+fi
+
+if [ -f bun.lockb ]
+then
+  run-js bun
+  exit 0
+fi
+
+if [ -f yarn.lock ]
+then
+  use-nvm-rc
+  run-js yarn
+  exit 0
+fi
+
 if [ -f package.json ]
 then
-  npm run start -- "$@"
+  use-nvm-rc
+  run-js npm
   exit 0
 fi
 
 if [ -f *.csproj ] || [ -f *.fsproj ]
 then
-  dotnet run "$@"
+  dotnet run "$command" $@
   exit 0
 fi
 
@@ -18,5 +61,5 @@ then
   exit 0
 fi
 
-echo "Could not find any project type"
+echo "Could not find project type"
 exit 1

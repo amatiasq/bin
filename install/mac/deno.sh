@@ -10,3 +10,6 @@ deno install \
   -f \
   --unstable \
   https://deno.land/x/denon/denon.ts
+
+# install bun too
+curl -fsSL https://bun.sh/install | bash
