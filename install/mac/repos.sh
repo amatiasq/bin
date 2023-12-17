@@ -12,9 +12,9 @@ cd ~/repos
 
 $HOME/bin/clone-all-repos amatiasq
 
-mkdir -p ~/primer
-cd ~/primer
+# mkdir -p ~/primer
+# cd ~/primer
 
-$HOME/bin/clone-all-repos Primer-Learning --org
+# $HOME/bin/clone-all-repos Primer-Learning --org
 
 echo "Done"

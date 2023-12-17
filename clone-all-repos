@@ -1,9 +1,15 @@
 #!/bin/bash -e
 # Thanks ChatGPT
 
-# Prompt user for Github username and access token
-read -p "Enter Github username: " GITHUB_USERNAME
-read -sp "Enter Github access token: " GITHUB_TOKEN
+GITHUB_USERNAME="$1"
+
+if [ -z "$GITHUB_USERNAME" ]; then
+  read -p "Enter Github username: " GITHUB_USERNAME
+fi
+
+if [ -z "$GITHUB_TOKEN" ]; then
+  read -sp "Enter Github access token: " GITHUB_TOKEN
+fi
 
 # Set up variables for pagination
 PAGE=1

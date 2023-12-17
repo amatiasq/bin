@@ -20,5 +20,5 @@ $DOT fetch --unshallow > .dotfetch.log &
 # Set post commit hook to push on commit
 HOOK="$HOME/.dot/hooks/post-commit"
 echo '#!/bin/sh' > $HOOK
-echo 'git push origin master' >> $HOOK
+echo "$DOT push origin master" >> $HOOK
 chmod +x $HOOK
