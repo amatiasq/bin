@@ -1,14 +1,19 @@
 #!/bin/bash
 
-cmd=$@;
+cmd="$@";
 
 for i in $(ls)
 do
 	if [ -d "$i" ]
 	then
-		echo -e "\n-- Directory -- $i"
-		cd $i
-		eval $cmd
-		cd ..
+		if [ -z "$cmd" ]
+		then
+			echo "$i"
+		else
+			echo -e "\n-- Directory -- $i"
+			cd $i
+			eval "$cmd"
+			cd ..
+		fi
 	fi
 done

@@ -1,0 +1,63 @@
+#!/bin/bash
+
+noop='echo'
+
+if [ "$#" -gt 0 ]
+then
+  noop=''
+fi
+
+for i in $(each)
+do
+  if [ ! -d "$i/.git" ]
+  then
+    echo "--- $i ---"
+    echo NOT GIT
+    echo ''
+    continue
+  fi
+
+  cd "$i"
+  message=''
+
+  git for-each-ref --format="%(refname:short) %(upstream:short)" refs/heads | \
+  while read local remote
+  do
+    [ -z "$remote" ] && continue
+    git rev-list --left-right "${local}...${remote}" -- 2>/dev/null >/tmp/git_upstream_status_delta || continue
+    LEFT_AHEAD=$(grep -c '^<' /tmp/git_upstream_status_delta)
+    # RIGHT_AHEAD=$(grep -c '^>' /tmp/git_upstream_status_delta)
+    rm /tmp/git_upstream_status_delta
+    [ "$LEFT_AHEAD" -eq 0 ] && continue
+    message="$message\n$local has $LEFT_AHEAD commit(s) to push"
+  done
+
+  has_changes=$(git status --porcelain | wc -l)
+  cd ..
+
+  if [ "$has_changes" -gt 0 ]
+  then
+    message="$message\nThings to commit: $has_changes"
+  fi
+
+  if [ -n "$message" ]
+  then
+    echo -n "--- $i ---"
+    echo -e $message
+    echo ''
+  else
+    echo "--- $i ---"
+    echo Clean
+    echo ''
+    # $noop rm -rf "$i"
+  fi
+done
+
+#!/bin/bash
+# by http://github.com/jehiah
+# this prints out some branch status (similar to the '... ahead' info you get from git status)
+
+# example:
+# $ git branch-status
+# dns_check (ahead 1) | (behind 112) origin/master
+# master (ahead 2) | (behind 0) origin/master
