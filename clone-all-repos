@@ -1,5 +1,4 @@
 #!/bin/bash -e
-# Thanks ChatGPT
 
 GITHUB_USERNAME="$1"
 
@@ -19,26 +18,25 @@ HAS_NEXT_PAGE=true
 # Loop through pages of repositories
 while [ "${HAS_NEXT_PAGE}" == true ]
 do
-  # Construct API endpoint URL with pagination parameters
-  API_URL="https://api.github.com/users/${GITHUB_USERNAME}/repos?page=${PAGE}&per_page=${PER_PAGE}"
+  API_URL="https://api.github.com/users/$GITHUB_USERNAME/repos?page=$PAGE&per_page=$PER_PAGE"
+  REPOS=$(curl -s -H "Authorization: token $GITHUB_TOKEN" $API_URL)
 
-  # Get repositories for the current page using the Github API
-  REPOS=$(curl -s -H "Authorization: token ${GITHUB_TOKEN}" ${API_URL})
-
-  # If the API response has an empty array of repositories, we've reached the end of the list
-  if [ "$REPOS" == "[]" ]; then
+  if [ ${#REPOS} -lt 10 ]; then
     HAS_NEXT_PAGE=false
   else
-    # Loop through each repository and clone it
-    for repo in $(echo "$REPOS" | jq -r '.[].clone_url')
+    echo $REPOS | jq -rc '.[]' |\
+    while read repo_data
     do
+      repo_name=$(echo $repo_data | jq -r '.name')
+
       # Thanks Copilot
-      if [ -d "$repo" ]; then
-        echo "Skipping $repo because it already exists."
+      if [ -d "$repo_name" ]; then
+        echo "Skipping $repo_name because it already exists."
         continue
       fi
 
-      git clone "$repo"
+      repo_url=$(echo $repo_data | jq -r '.ssh_url')
+      git clone "$repo_url"
     done
 
     # Move on to the next page of repositories
