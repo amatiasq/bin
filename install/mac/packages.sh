@@ -14,6 +14,7 @@ brew install asciinema
 brew install deno
 brew install ffmpeg
 brew install fzf
+brew install gh
 brew install git-lfs
 brew install imagemagick
 brew install jq
