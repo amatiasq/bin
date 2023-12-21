@@ -44,6 +44,7 @@ brew install --cask openscad
 brew install --cask unity-hub
 brew install --cask obs
 brew install --cask prusaslicer
+brew install --cask autodesk-fusion360
 
 # Veracrypt (requires osxfuse)
 brew install --cask veracrypt

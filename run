@@ -10,6 +10,7 @@ function use-nvm-rc() {
 
 function run-js() {
   binary="$1"
+  shift
   [ -d node_modules ] || "$binary" install
   "$binary" run "$command" -- $@
 }
@@ -24,6 +25,9 @@ then
   elif grep -q '"start":' package.json
   then
     command="start"
+  elif grep -q '"serve":' package.json
+  then
+    command="serve"
   fi
 else
   shift
@@ -31,21 +35,21 @@ fi
 
 if [ -f bun.lockb ]
 then
-  run-js bun
+  run-js bun $@
   exit 0
 fi
 
 if [ -f yarn.lock ]
 then
   use-nvm-rc
-  run-js yarn
+  run-js yarn $@
   exit 0
 fi
 
 if [ -f package.json ]
 then
   use-nvm-rc
-  run-js npm
+  run-js npm $@
   exit 0
 fi
 

@@ -1,0 +1,26 @@
+#!/bin/bash -e
+
+BRANCH=$1
+CURRENT_BRANCH=$(git branch --show-current)
+
+if [ ! -z "$BRANCH" ]; then
+		echo "Syncing $BRANCH..."
+		git checkout $BRANCH > /dev/null 2>&1
+		git pull --ff-only origin $BRANCH > /dev/null 2>&1
+		git checkout $CURRENT_BRANCH > /dev/null 2>&1
+		echo 'Done'
+		exit 0
+fi
+
+git for-each-ref --format="%(refname:short) %(upstream:short)" refs/heads | \
+while read local remote
+do
+		[ -z "$remote" ] && continue
+		echo "Syncing $local..."
+		git checkout $local > /dev/null 2>&1
+		git pull --ff-only origin $local > /dev/null 2>&1 || continue
+done
+
+echo "Back to $CURRENT_BRANCH..."
+git checkout $CURRENT_BRANCH > /dev/null 2>&1
+echo 'Done'
