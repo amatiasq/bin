@@ -1,0 +1,6 @@
+#!/bin/bash
+
+BRANCH=$1
+shift
+
+git checkout "$BRANCH" -- "$@"

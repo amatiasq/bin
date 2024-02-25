@@ -28,6 +28,9 @@ brew install zsh
 brew install nvm
 mkdir ~/.nvm
 
+brew install supabase/tap/supabase \
+  && brew install supabase/tap/supabase
+
 brew tap samwho/spacer \
   && brew install spacer
 

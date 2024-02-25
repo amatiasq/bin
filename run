@@ -17,6 +17,12 @@ function run-js() {
 
 command="$1"
 
+if [ "$command" = "r" ]
+then
+  echo "Guitarra"
+  exit 2
+fi
+
 if [ -z "$command" ]
 then
   if grep -q '"dev":' package.json
