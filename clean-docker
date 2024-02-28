@@ -1,5 +1,13 @@
 #!/bin/bash
 
+echo "Removing all containers that are not running"
 docker rm $(docker ps -a -q)
-docker rmi $(docker images -q)
+
+
+# only do this if you want to have to download them again
+#
+# echo "Removing all images that are not in use"
+# docker rmi $(docker images -q)
+
+
 docker system prune -a -f

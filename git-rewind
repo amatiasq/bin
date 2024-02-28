@@ -1,0 +1,27 @@
+#!/bin/bash
+
+# Check if a file name was provided
+if [ "$#" -ne 1 ]; then
+    echo "Usage: $0 <file>"
+    exit 1
+fi
+
+# The file to inspect
+file=$1
+
+# Get all commits for the specified file in reverse order to start from the earliest
+commits=$(git log --reverse --pretty=format:"%H" -- "$file")
+
+# Iterate over each commit
+for commit in $commits; do
+    # Show the changes made to the file in this commit
+    git show "$commit" -- "$file"
+    echo
+
+    # Ask the user if they want to continue
+    read -p "Continue to the next commit? (y/n): " answer
+    if [ "$answer" != "y" ]; then
+        echo "Exiting..."
+        exit 0
+    fi
+done
