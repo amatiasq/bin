@@ -39,6 +39,12 @@ else
   shift
 fi
 
+if [ -f Makefile ]
+then
+  make "$command" $@
+  exit 0
+fi
+
 if [ -f bun.lockb ]
 then
   run-js bun $@

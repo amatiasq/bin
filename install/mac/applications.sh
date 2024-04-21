@@ -27,6 +27,7 @@ brew install --cask calibre
 brew install --cask docker
 brew install --cask keka
 brew install --cask xscope
+# brew install --cask lm-studio # requires ARM
 
 # Entretainment
 brew install --cask steam

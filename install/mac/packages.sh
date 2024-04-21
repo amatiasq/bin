@@ -24,12 +24,12 @@ brew install wget
 brew install youtube-dl
 brew install zsh
 
+# https://github.com/Y2Z/monolith
+brew install monolith
+
 # NVM is a special case
 brew install nvm
 mkdir ~/.nvm
-
-brew install supabase/tap/supabase \
-  && brew install supabase/tap/supabase
 
 brew tap samwho/spacer \
   && brew install spacer
@@ -42,6 +42,11 @@ brew tap jakehilborn/jakehilborn \
 
 brew tap microsoft/git \
   && brew install --cask git-credential-manager-core
+
+brew install supabase/tap/supabase
+brew install gptscript-ai/tap/gptscript
+brew install ynqa/tap/jnv
+brew install charmbracelet/tap/freeze
 
 # Bun
 curl -fsSL https://bun.sh/install | bash
