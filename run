@@ -25,15 +25,24 @@ fi
 
 if [ -z "$command" ]
 then
-  if grep -q '"dev":' package.json
+  if grep -q '"dev":' package.json 2>/dev/null
   then
     command="dev"
-  elif grep -q '"start":' package.json
+  elif grep -q '"start":' package.json 2>/dev/null
   then
     command="start"
-  elif grep -q '"serve":' package.json
+  elif grep -q '"serve":' package.json 2>/dev/null
   then
     command="serve"
+  elif grep -q '"dev":' deno.json 2>/dev/null
+  then
+    command="dev"
+  elif grep -q '"serve":' deno.json 2>/dev/null
+  then
+    command="serve"
+  elif grep -q 'dev:' Makefile 2>/dev/null
+  then
+    command="dev"
   fi
 else
   shift
@@ -65,6 +74,12 @@ then
   exit 0
 fi
 
+if [ -f deno.json ]
+then
+  deno task "$command" $@
+  exit 0
+fi
+
 if [ -f *.csproj ] || [ -f *.fsproj ]
 then
   dotnet run "$command" $@
@@ -73,7 +88,7 @@ fi
 
 if [ -f Cargo.toml ]
 then
-  trunk serve
+  cargo watch -x run
   exit 0
 fi
 
