@@ -2,7 +2,7 @@
 
 cmd="$@";
 
-for i in $(ls)
+for i in ./*
 do
 	if [ -d "$i" ]
 	then
@@ -11,7 +11,7 @@ do
 			echo "$i"
 		else
 			echo -e "\n-- Directory -- $i"
-			cd $i
+			cd "$i"
 			eval "$cmd"
 			cd ..
 		fi
