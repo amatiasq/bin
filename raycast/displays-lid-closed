@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# @raycast.schemaVersion 1
+# @raycast.title Displays: Restore order for lid closed
+# @raycast.mode silent
+
+displayplacer \
+  "id:AA26A919-A2E3-8319-97EF-9521EBF6AB40 res:1920x1080 hz:60 color_depth:8 enabled:true scaling:off origin:(0,0) degree:0" \
+  "id:000005E3-0000-3201-0000-03A100000000 res:2560x1440 hz:60 color_depth:4 enabled:true scaling:off origin:(-640,-1440) degree:0" \
+  "id:00004C2D-0000-0D20-4357-413400000000 res:1080x1920 hz:60 color_depth:4 enabled:true scaling:off origin:(1920,-840) degree:90"
+
+# afplay /System/Library/Sounds/Basso.aiff
+afplay /System/Library/Sounds/Hero.aiff
