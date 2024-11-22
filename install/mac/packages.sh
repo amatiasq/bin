@@ -18,6 +18,8 @@ brew install gh
 brew install git-lfs
 brew install imagemagick
 brew install jq
+brew install jd
+brew install neilotoole/sq/sq
 brew install pyenv
 brew install thefuck
 brew install watch

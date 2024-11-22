@@ -40,12 +40,14 @@ brew install --cask pokemon-tcg-live
 
 # great tools
 brew install handbrake
+brew install --cask zotero
 brew install --cask blender
 brew install --cask openscad
 brew install --cask unity-hub
 brew install --cask obs
 brew install --cask prusaslicer
 brew install --cask autodesk-fusion360
+brew install --cask macmediakeyforwarder
 
 # Veracrypt (requires osxfuse)
 brew install --cask veracrypt
