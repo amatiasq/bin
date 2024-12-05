@@ -9,15 +9,18 @@ brew install --cask sublime-text
 # Hardware
 brew install --cask android-file-transfer
 brew install --cask displaylink
-brew install --cask jabra-direct
 brew install --cask logi-options-plus
 brew install --cask loopback
 # brew install --cask paragon-ntfs
+
+sudo softwareupdate --install-rosetta --agree-to-license
+brew install --cask jabra-direct
 
 # Development
 brew install --cask visual-studio-code
 brew install --cask firefox
 brew install --cask google-chrome
+brew install --cask arc
 
 # Utilities
 brew install --cask raycast
@@ -36,11 +39,9 @@ brew install --cask vlc
 brew install --cask discord
 brew install --cask battle-net
 brew install --cask minecraft
-brew install --cask pokemon-tcg-live
 
 # great tools
 brew install handbrake
-brew install --cask zotero
 brew install --cask blender
 brew install --cask openscad
 brew install --cask unity-hub
