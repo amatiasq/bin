@@ -1,0 +1,33 @@
+#!/bin/bash -e
+
+REPO="$(pwd)/$1"
+
+function main() {
+  install-deps
+  create-dir
+
+  git-of-theseus-analyze "$REPO"
+  git-of-theseus-line-plot authors.json
+  git-of-theseus-stack-plot cohorts.json
+  git-of-theseus-survival-plot survival.json
+
+  open .
+}
+
+function create-dir() {
+  NAME="$(basename "$REPO")"
+  DEST="$HOME/repo-stats/$NAME"
+
+  [ -d "$DEST" ] && rm -r "$DEST"
+
+  mkdir -p "$DEST"
+  cd "$DEST"
+}
+
+function install-deps() {
+  pipx --version >/dev/null 2>&1 || brew install pipx
+  git-of-theseus-analyze --help >/dev/null 2>&1 || pipx install git-of-theseus
+}
+
+# --- ENTRY POINT ---
+main

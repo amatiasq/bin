@@ -10,7 +10,6 @@ brew tap homebrew/cask
 brew update
 
 # Install homebrew pacakges
-brew install asciinema
 brew install deno
 brew install ffmpeg
 brew install fzf
@@ -22,8 +21,10 @@ brew install jd
 brew install neilotoole/sq/sq
 brew install pyenv
 brew install thefuck
+brew install tree
 brew install watch
 brew install wget
+brew install xo/xo/usql
 brew install zsh
 
 # NVM is a special case
@@ -39,4 +40,3 @@ curl -fsSL https://bun.sh/install | bash
 
 # Rust
 curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
-

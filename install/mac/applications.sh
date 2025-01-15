@@ -50,6 +50,12 @@ brew install --cask prusaslicer
 brew install --cask autodesk-fusion360
 brew install --cask macmediakeyforwarder
 
+# YEGO
+brew install --cask slack
+brew install --cask tunnelblick
+brew install --cask android-studio
+brew install --cask tableplus
+
 # Veracrypt (requires osxfuse)
 brew install --cask veracrypt
 cd ~/Downloads

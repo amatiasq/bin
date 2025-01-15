@@ -12,9 +12,9 @@ cd ~/repos
 
 $HOME/bin/clone-all-repos amatiasq
 
-# mkdir -p ~/primer
-# cd ~/primer
+mkdir -p ~/yego
+cd ~/yego
 
-# $HOME/bin/clone-all-repos Primer-Learning --org
+$HOME/bin/clone-all-repos GETYUGO --org
 
 echo "Done"
