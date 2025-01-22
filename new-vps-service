@@ -73,7 +73,7 @@ function usage() {
 function generate-local-source() {
 	mkdir -p "$LOCAL_DIR"/src
 
-	cat > "$LOCAL_DIR"/src/index.ts <<-EOF
+	cat > "$LOCAL_DIR"/src/main.ts <<-EOF
 		Deno.serve((req) => {
 		  return new Response("Hello, World!");
 		});
@@ -83,8 +83,8 @@ function generate-local-source() {
 		FROM denoland/deno:latest AS base
 		WORKDIR /app
 		COPY . ./
-		RUN deno cache src/index.ts
-		CMD deno run --allow-env --allow-net --allow-read --allow-write=data.db src/index.ts
+		RUN deno cache src/main.ts
+		CMD deno run --allow-env --allow-net --allow-read --allow-write=data.db src/main.ts
 	EOF
 
 	cat > "$LOCAL_DIR"/Makefile <<EOF
@@ -94,12 +94,16 @@ IMAGE_NAME=docker.amatiasq.com/$PROJECT_NAME
 SERVICE_NAME=$SERVICE_NAME
 CONTAINER_NAME=$CONTAINER_NAME
 
-all: deploy
+dev:
+	deno run --allow-net --allow-read --watch src/main.ts
 
 push: deploy
 	git push
 
 deploy: build-image push-image pull-image
+
+docker-login:
+	docker login docker.amatiasq.com
 
 build-image:
 	docker buildx build --platform linux/amd64 --pull -t \$(IMAGE_NAME):latest .
