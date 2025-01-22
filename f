@@ -1,5 +1,12 @@
 #!/bin/bash
 
+# REMEMBER
+# to configur AI Vendor (1. OpenAI)
+# default vendor
+# patterns (11)
+# youtube (12)
+# with `fabric --setup`
+
 function main() {
   if [[ $1 == https://www.youtube.com/watch* ]] || [[ $1 == https://youtu.be/* ]];
   then

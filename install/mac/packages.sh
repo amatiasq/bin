@@ -34,7 +34,6 @@ mkdir ~/.nvm
 brew tap jakehilborn/jakehilborn \
   && brew install displayplacer
 
-
 # Bun
 curl -fsSL https://bun.sh/install | bash
 

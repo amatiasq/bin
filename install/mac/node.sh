@@ -3,10 +3,12 @@
 source $(brew --prefix nvm)/nvm.sh
 
 nvm install stable
+nvm install 22
+nvm install 20
 nvm install 18
-nvm install 16
-nvm install 14
-nvm install 12
+# nvm install 16
+# nvm install 14
+# nvm install 12
 
 nvm use stable
 
