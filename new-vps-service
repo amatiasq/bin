@@ -1,0 +1,173 @@
+#!/bin/bash -e
+
+#############
+## WARNING ##
+#############
+#
+# Tab identation is important for heredoc <<- to work
+# while space identation is preserved in the output
+# preserve whitespace for the code to work
+#
+
+LOCAL_DEST=~/repos/mono
+VPS_DEST=vps/docker
+
+PROJECT_NAME=
+SERVICE_NAME=
+CONTAINER_NAME=
+SUBDOMAIN=
+
+LOCAL_DIR=
+VPS_DIR=
+
+function main() {
+	LOCAL_DIR="$LOCAL_DEST/$PROJECT_NAME"
+	echo "Generating local files in $LOCAL_DIR..."
+	generate-local-source
+	cd "$LOCAL_DIR"
+	git add .
+	git commit -m "init($PROJECT_NAME): add service $PROJECT_NAME"
+
+	VPS_DIR="$VPS_DEST/$SERVICE_NAME"
+	echo "Generating VPS files in $VPS_DIR..."
+	generate-vps-service
+	ssh amatiasq.com <<-EOF
+		cd $VPS_DIR
+		git add .
+		git commit -m "init($PROJECT_NAME): add service $PROJECT_NAME"
+	EOF
+
+	echo 'Deploying...'
+	make deploy
+	echo 'Done!'
+}
+
+function read-params() {
+	PROJECT_NAME="$1"
+	[ -z "$PROJECT_NAME" ] && usage && exit 1
+
+	SUBDOMAIN="$2"
+	if [ -n "$SUBDOMAIN" ]; then
+		CONTAINER_NAME="com_amatiasq_$SUBDOMAIN"
+		SERVICE_NAME="$CONTAINER_NAME"
+	else
+		CONTAINER_NAME="amq-$PROJECT_NAME"
+		SERVICE_NAME="$PROJECT_NAME"
+	fi
+}
+
+function usage() {
+	echo "Usage: $0 <service-name> [subdomain]"
+	echo
+	echo "  service-name: the name of the service to create"
+	echo "  subdomain: the subdomain to use for the service"
+	echo
+	echo "Example: $0 my-service my"
+	echo "  This will create a service named 'my-service' with the subdomain 'my.amatiasq.com'"
+	echo
+	echo "Example: $0 my-service"
+	echo "  This will create a service named 'my-service' without a subdomain"
+	echo
+}
+
+function generate-local-source() {
+	mkdir -p "$LOCAL_DIR"/src
+
+	cat > "$LOCAL_DIR"/src/index.ts <<-EOF
+		Deno.serve((req) => {
+		  return new Response("Hello, World!");
+		});
+	EOF
+
+	cat > "$LOCAL_DIR"/Dockerfile <<-EOF
+		FROM denoland/deno:latest AS base
+		WORKDIR /app
+		COPY . ./
+		RUN deno cache src/index.ts
+		CMD deno run --allow-env --allow-net --allow-read --allow-write=data.db src/index.ts
+	EOF
+
+	cat > "$LOCAL_DIR"/Makefile <<EOF
+.PHONY: all push deploy build-image push-image pull-image logs start stop restart remove-from-vps debug
+
+IMAGE_NAME=docker.amatiasq.com/$PROJECT_NAME
+SERVICE_NAME=$SERVICE_NAME
+CONTAINER_NAME=$CONTAINER_NAME
+
+all: deploy
+
+push: deploy
+	git push
+
+deploy: build-image push-image pull-image
+
+build-image:
+	docker buildx build --platform linux/amd64 --pull -t \$(IMAGE_NAME):latest .
+	docker tag \$(IMAGE_NAME):latest \$(IMAGE_NAME):\$\$(date +%Y-%m-%dT%H-%M-%S)
+
+push-image:
+	docker push \$(IMAGE_NAME):latest
+
+pull-image:
+	ssh amatiasq.com 'VPS_DIR=\$\$HOME/vps vps/bin/pull-and-restart \$(SERVICE_NAME)'
+
+logs:
+	ssh amatiasq.com 'docker logs -f \$(CONTAINER_NAME)'
+
+start:
+	echo 'To start the application on the server, use the commands deploy (to deploy a fresh version) or restart (to start the last deployed version).'
+
+stop:
+	ssh amatiasq.com 'VPS_DIR=\$\$HOME/vps vps/bin/stop \$(SERVICE_NAME)'
+
+restart:
+	ssh amatiasq.com 'VPS_DIR=\$\$HOME/vps vps/bin/restart \$(SERVICE_NAME)'
+
+remove-from-vps: stop
+	ssh amatiasq.com 'rm -r vps/docker/\$(SERVICE_NAME)'
+EOF
+}
+
+function generate-vps-service() {
+	ssh amatiasq.com "mkdir -p $VPS_DIR"
+
+	ssh amatiasq.com "cat > $VPS_DIR/.env" <<-EOF
+		BAR=foo
+	EOF
+
+	ssh amatiasq.com "cat > $VPS_DIR/.gitignore" <<-EOF
+		data.db
+	EOF
+
+	ssh amatiasq.com "cat > $VPS_DIR/docker-compose.yml" <<-EOF
+		version: '3.7'
+
+		services:
+		  registry:
+		    image: docker.amatiasq.com/$PROJECT_NAME:latest
+		    container_name: $CONTAINER_NAME
+		    restart: always
+		    volumes:
+		      - ./data.db:/app/data.db
+		    environment:
+		      FOO: \${BAR}
+	EOF
+
+	if [ -n "$SUBDOMAIN" ]; then
+		ssh amatiasq.com "cat >> $VPS_DIR/docker-compose.yml" <<-EOF
+			      VIRTUAL_HOST: $SUBDOMAIN.amatiasq.com,$SUBDOMAIN.amq.im
+			      LETSENCRYPT_HOST: $SUBDOMAIN.amatiasq.com,$SUBDOMAIN.amq.im
+			      LETSENCRYPT_EMAIL: amatiasq@gmail.com
+			    networks:
+			      - exposed
+
+			networks:
+			  exposed:
+			    external: true
+		EOF
+	fi
+}
+
+# --- ENTRY POINT ---
+read-params "$@"
+main
