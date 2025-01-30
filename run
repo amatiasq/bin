@@ -3,6 +3,9 @@
 command="$1"
 
 function main() {
+  [ "$command" = "user" ] && { app-start user; exit $?; }
+  [ "$command" = "ranger" ] && { app-start ranger; exit $?; }
+
   easer-egg
   default-command
   run "$@"
