@@ -1,5 +1,98 @@
 #!/bin/bash -e
 
+command="$1"
+
+function main() {
+  easer-egg
+  default-command
+  run "$@"
+}
+
+function default-command() {
+  if [ -z "$command" ]
+  then
+    if grep -q '"dev":' package.json 2>/dev/null
+    then
+      command="dev"
+    elif grep -q '"start":' package.json 2>/dev/null
+    then
+      command="start"
+    elif grep -q '"serve":' package.json 2>/dev/null
+    then
+      command="serve"
+    elif grep -q '"dev":' deno.json 2>/dev/null
+    then
+      command="dev"
+    elif grep -q '"serve":' deno.json 2>/dev/null
+    then
+      command="serve"
+    elif grep -q 'dev:' Makefile 2>/dev/null
+    then
+      command="dev"
+    fi
+  else
+    shift
+  fi
+}
+
+function run() {
+  if [ -f Makefile ]
+  then
+    make "$command" $@
+    exit 0
+  fi
+
+  if [ -f bun.lockb ]
+  then
+    run-js bun $@
+    exit 0
+  fi
+
+  if [ -f yarn.lock ]
+  then
+    use-nvm-rc
+    run-js yarn $@
+    exit 0
+  fi
+
+  if [ -f package.json ]
+  then
+    use-nvm-rc
+    run-js npm $@
+    exit 0
+  fi
+
+  if [ -f deno.json ]
+  then
+    deno task "$command" $@
+    exit 0
+  fi
+
+  if [ -f *.csproj ] || [ -f *.fsproj ]
+  then
+    dotnet run "$command" $@
+    exit 0
+  fi
+
+  if [ -f Cargo.toml ]
+  then
+    cargo watch -x run
+    exit 0
+  fi
+
+  echo "Could not find project type"
+  exit 1
+
+}
+
+function easer-egg() {
+  if [ "$command" = "r" ]
+  then
+    echo "Guitarra"
+    exit 2
+  fi
+}
+
 function use-nvm-rc() {
   if [ -f .nvmrc ]
   then
@@ -15,82 +108,5 @@ function run-js() {
   "$binary" run "$command" -- $@
 }
 
-command="$1"
-
-if [ "$command" = "r" ]
-then
-  echo "Guitarra"
-  exit 2
-fi
-
-if [ -z "$command" ]
-then
-  if grep -q '"dev":' package.json 2>/dev/null
-  then
-    command="dev"
-  elif grep -q '"start":' package.json 2>/dev/null
-  then
-    command="start"
-  elif grep -q '"serve":' package.json 2>/dev/null
-  then
-    command="serve"
-  elif grep -q '"dev":' deno.json 2>/dev/null
-  then
-    command="dev"
-  elif grep -q '"serve":' deno.json 2>/dev/null
-  then
-    command="serve"
-  elif grep -q 'dev:' Makefile 2>/dev/null
-  then
-    command="dev"
-  fi
-else
-  shift
-fi
-
-if [ -f Makefile ]
-then
-  make "$command" $@
-  exit 0
-fi
-
-if [ -f bun.lockb ]
-then
-  run-js bun $@
-  exit 0
-fi
-
-if [ -f yarn.lock ]
-then
-  use-nvm-rc
-  run-js yarn $@
-  exit 0
-fi
-
-if [ -f package.json ]
-then
-  use-nvm-rc
-  run-js npm $@
-  exit 0
-fi
-
-if [ -f deno.json ]
-then
-  deno task "$command" $@
-  exit 0
-fi
-
-if [ -f *.csproj ] || [ -f *.fsproj ]
-then
-  dotnet run "$command" $@
-  exit 0
-fi
-
-if [ -f Cargo.toml ]
-then
-  cargo watch -x run
-  exit 0
-fi
-
-echo "Could not find project type"
-exit 1
+# --- ENTRY POINT ---
+main "$@"
