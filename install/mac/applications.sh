@@ -49,6 +49,7 @@ brew install --cask obs
 brew install --cask prusaslicer
 brew install --cask autodesk-fusion360
 brew install --cask macmediakeyforwarder
+brew install --cask charles
 
 # YEGO
 brew install --cask slack

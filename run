@@ -7,34 +7,34 @@ function main() {
   [ "$command" = "ranger" ] && { app-start ranger; exit $?; }
   [ "$command" = "r" ] && { echo "Guitarra"; exit 2; }
 
-  easer-egg
-  default-command
+  if [ -z "$command" ]; then
+    default-command "$@"
+  else
+    shift
+  fi
+
   run "$@"
 }
 
 function default-command() {
+  function has() {
+    grep -q "\"$1\":" package.json 2>/dev/null \
+    || grep -q "\"$1\":" deno.json 2>/dev/null \
+    || grep -q "$1:" Makefile 2>/dev/null
+  }
+
+
+  if has "dev"; then
+    command="dev"
+  elif has "start"; then
+    command="start"
+  elif has "serve"; then
+    command="serve"
+  fi
+
   if [ -z "$command" ]; then
-    if grep -q '"dev":' package.json 2>/dev/null
-    then
-      command="dev"
-    elif grep -q '"start":' package.json 2>/dev/null
-    then
-      command="start"
-    elif grep -q '"serve":' package.json 2>/dev/null
-    then
-      command="serve"
-    elif grep -q '"dev":' deno.json 2>/dev/null
-    then
-      command="dev"
-    elif grep -q '"serve":' deno.json 2>/dev/null
-    then
-      command="serve"
-    elif grep -q 'dev:' Makefile 2>/dev/null
-    then
-      command="dev"
-    fi
-  else
-    shift
+    echo "No command specified"
+    exit 1
   fi
 }
 

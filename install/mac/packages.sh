@@ -26,6 +26,7 @@ brew install watch
 brew install wget
 brew install xo/xo/usql
 brew install zsh
+brew install helix
 
 # NVM is a special case
 brew install nvm
