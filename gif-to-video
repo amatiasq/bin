@@ -1,0 +1,30 @@
+#!/bin/bash
+# https://evilmartians.com/chronicles/better-web-video-with-av1-codec
+
+INPUT="$1"
+OUTPUT="$2"
+
+# Lower values correspond to higher quality and greater file size
+QUALITY_RATIO=30
+
+if [ -z "$INPUT" ]; then
+  echo "Usage: $0 input output"
+  exit 1
+fi
+
+if [ -z "$OUTPUT" ]; then
+  OUTPUT="${INPUT%.*}.mp4"
+fi
+
+ffmpeg \
+  -i "$INPUT" \
+  -map_metadata -1 \
+  -an opus \
+  -c:v libsvtav1 \
+  -qp "$QUALITY_RATIO" \
+  -tile-columns 2 \
+  -tile-rows 2 \
+  -pix_fmt yuv420p \
+  -movflags +faststart \
+  -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" \
+  "$OUTPUT"

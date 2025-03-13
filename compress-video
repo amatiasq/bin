@@ -1,0 +1,42 @@
+#!/bin/bash
+# https://evilmartians.com/chronicles/better-web-video-with-av1-codec
+
+INPUT="$1"
+OUTPUT="$2"
+
+# Lower values correspond to higher quality and greater file size
+QUALITY_RATIO=30
+
+if [ -z "$INPUT" ]; then
+  echo "Usage: $0 input output"
+  exit 1
+fi
+
+if [ -z "$OUTPUT" ]; then
+  OUTPUT="${INPUT%.*}-compressed.mp4"
+fi
+
+ffmpeg \
+  -i "$INPUT" \
+  -c:a libopus \
+  -c:v libsvtav1 \
+  -nostats \
+  -qp "$QUALITY_RATIO" \
+  -tile-columns 2 \
+  -tile-rows 2 \
+  -movflags +faststart \
+  -vf "scale=trunc(iw/2)*2:trunc(ih/2)*2" \
+  "$OUTPUT" 1>&2
+
+echo "$OUTPUT"
+
+# REMOVED OPTIONS
+
+# will remove video metadata (like the name of a tool that was used initially to create a video)
+# Sometimes metadata is useful, but for web development this is rarely the case.
+  # -map_metadata -1 \
+
+# (pixel format) is a trick to reduce the size of a video.
+# it uses full resolution for brightness and a smaller resolution for color.
+# This is a way to fool the human eye
+  # -pix_fmt yuv420p \

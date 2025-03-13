@@ -1,0 +1,39 @@
+#!/bin/bash
+
+# HACK
+# we can't loop with pipes because ffmpeg somehow alters output
+# so we need to create a list of files to process
+# and remove them from the list as we go :(
+list=$(mktemp)
+find "${1:-.}" -name "*.mp4" -type f > "$list"
+
+while
+  file=$(head -n 1 "$list")
+  [ -n "$file" ]
+do
+  sed -i '' 1d "$list"
+# END HACK
+
+  echo "Processing $file"
+  compressed=$(compress-video "$file" 2>/dev/null)
+
+  if [ ! -f "$compressed" ]
+  then
+    echo "  Failed to compress"
+    continue
+  fi
+
+  original_size=$(stat -f %z "$file")
+  compressed_size=$(stat -f %z "$compressed")
+
+  if [ $compressed_size -lt $original_size ]
+  then
+    percent=$(echo "scale=2; 100 - (100 * $compressed_size / $original_size)" | bc)
+    echo "  Reduction of $percent%"
+    rm "$file"
+    mv "$compressed" "$file"
+  else
+    echo "  Keeping original"
+    rm "$compressed"
+  fi
+done
