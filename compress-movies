@@ -1,0 +1,59 @@
+#!/bin/bash
+
+# HACK
+# we can't loop with pipes because ffmpeg somehow alters output
+# so we need to create a list of files to process
+# and remove them from the list as we go :(
+list=$(mktemp)
+find "${1:-.}" \( -name "*.mp4" -o -name "*.avi" -o -name "*.mkv" \) -type f > "$list"
+
+while
+  file=$(head -n 1 "$list")
+  [ -n "$file" ]
+do
+  sed -i '' 1d "$list"
+# END HACK
+
+  if [[ "$file" =~ .*Alucinantes.* ]] ||
+      [[ "$file" =~ './Click.avi' ]] ||
+      [[ "$file" =~ './El recuerdo de Marni.avi' ]]
+  then
+    echo "Skipping $file"
+    continue
+  fi
+
+  file_tmp=$(mktemp)
+  echo "Processing $file in $file_tmp"
+  cp "$file" "$file_tmp"
+  echo '  Copy completed'
+  compressed=$(compress-video "$file_tmp" 2>/dev/null)
+  rm "$file_tmp"
+
+  if [ ! -f "$compressed" ]
+  then
+    echo "  Failed to compress"
+    continue
+  fi
+
+  original_size=$(stat -f %z "$file")
+  compressed_size=$(stat -f %z "$compressed")
+
+  if [ $compressed_size == 0 ]
+  then
+    echo "  Compressed file is empty"
+    rm "$compressed"
+    continue
+  fi
+
+  if [ $compressed_size -lt $original_size ]
+  then
+    percent=$(echo "scale=2; 100 - (100 * $compressed_size / $original_size)" | bc)
+    echo "  Reduction of $percent%"
+    rm "$file"
+    mv "$compressed" "$file"
+    rm "./#recycle/*"
+  else
+    echo "  Keeping original"
+    rm "$compressed"
+  fi
+done

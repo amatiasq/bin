@@ -45,6 +45,7 @@ function run() {
   fi
 
   if [ -f bun.lockb ]; then
+    use-nvm-rc
     run-js bun $@
     exit 0
   fi

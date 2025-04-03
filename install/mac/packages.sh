@@ -15,6 +15,7 @@ brew install ffmpeg
 brew install fzf
 brew install gh
 brew install git-lfs
+brew install git-who
 brew install imagemagick
 brew install jq
 brew install jd

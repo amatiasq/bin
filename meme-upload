@@ -1,0 +1,25 @@
+#!/bin/bash
+
+file="$1"
+name="$2"
+
+if [ -z "$file" ]; then
+  echo "Usage: $0 <file> [name]"
+  exit 1
+fi
+
+if [ ! -f "$file" ]; then
+  echo "File not found!"
+  exit 1
+fi
+
+dest="vps/docker/com_amatiasq_meme/memes"
+
+if [ -z "$name" ]; then
+  dest="$dest/$(basename "$file")"
+else
+  extension="${file##*.}"
+  dest="$dest/$name.$extension"
+fi
+
+scp "$file" "amatiasq.com:$dest"

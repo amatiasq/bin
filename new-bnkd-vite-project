@@ -1,0 +1,52 @@
+#!/bin/bash -e
+
+PROJECT_NAME="$1"
+
+if [ -z "$PROJECT_NAME" ]; then
+    echo "Usage: $0 <project-name>"
+    exit 1
+fi
+
+bun create vite@latest "$PROJECT_NAME" --template react-ts
+
+cd "$PROJECT_NAME"
+bun install
+
+bun install bknd
+bun install @hono/vite-dev-server
+bun install vite-tsconfig-paths
+
+cat <<EOF > server.ts
+import { serve } from "bknd/adapter/vite";
+
+// the configuration given is optional
+export default serve({
+   mode: "cached", // that's the default
+   connection: {
+      url: ":memory:"
+   }
+})
+EOF
+
+rm vite.config.ts
+cat <<EOF > vite.config.ts
+import { devServer } from "bknd/adapter/vite";
+import react from "@vitejs/plugin-react";
+import { defineConfig } from "vite";
+import tsconfigPaths from "vite-tsconfig-paths";
+
+// https://vitejs.dev/config/
+export default defineConfig({
+  plugins: [
+     react(),
+     tsconfigPaths(),
+     devServer({
+        // point to your previously created server file
+        entry: "./server.ts"
+     })
+  ]
+});
+EOF
+
+echo cd "$PROJECT_NAME"
+echo bun run dev
