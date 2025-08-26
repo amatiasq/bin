@@ -56,6 +56,7 @@ brew install --cask slack
 brew install --cask tunnelblick
 brew install --cask android-studio
 brew install --cask tableplus
+brew install --cask another-redis-desktop-manager
 
 # Veracrypt (requires osxfuse)
 brew install --cask veracrypt

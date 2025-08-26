@@ -1,5 +1,12 @@
 #!/bin/bash
 
+REMOVE=
+
+if [ "$1" == "-r" ]; then
+  REMOVE=1
+  shift
+fi
+
 file="$1"
 name="$2"
 
@@ -23,3 +30,12 @@ else
 fi
 
 scp "$file" "amatiasq.com:$dest"
+
+if [ $? -ne 0 ]; then
+  echo "Error uploading file!"
+  exit 1
+fi
+
+if [ "$REMOVE" ]; then
+  rm "$file"
+fi
