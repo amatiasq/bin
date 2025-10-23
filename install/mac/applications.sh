@@ -37,6 +37,7 @@ brew install --cask steam
 brew install --cask spotify
 brew install --cask vlc
 brew install --cask discord
+brew install --cask djuced
 brew install --cask battle-net
 brew install --cask minecraft
 

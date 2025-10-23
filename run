@@ -3,26 +3,45 @@
 command="$1"
 
 function main() {
-  [ "$command" = "user" ] && { app-start user; exit $?; }
-  [ "$command" = "ranger" ] && { app-start ranger; exit $?; }
-  [ "$command" = "r" ] && { echo "Guitarra"; exit 2; }
+  [ "$command" = "r" ] && { echo "Guitarra"; exit 2; } # r con r guitarra
 
-  if [ -z "$command" ]; then
-    default-command "$@"
-  else
+  # if command not empty
+  if [ -n "$command" ]; then
     shift
+  else
+    function at-dir() {
+      [ "$(pwd)" = "$1" ] || [ "$(pwd)" = "$(eval echo $1)" ]
+    }
+
+    if at-dir "~/yego/web-backoffice"; then
+      yego-bo-start
+      exit $?
+    elif at-dir "~/yego/app-user"; then
+      app-start user
+      exit $?
+    elif at-dir "~/yego/app-ranger"; then
+      app-start ranger
+      exit $?
+    fi
+
+    default-command "$@"
   fi
 
   run "$@"
 }
 
 function default-command() {
+  if [ ! -f Makefile ] && [ ! -f package.json ] && [ ! -f deno.json ]; then
+    echo "Please give me a command"
+    echo "I don't see a Makefile, package.json or deno.json here"
+    exit 1
+  fi
+
   function has() {
     grep -q "\"$1\":" package.json 2>/dev/null \
     || grep -q "\"$1\":" deno.json 2>/dev/null \
     || grep -q "$1:" Makefile 2>/dev/null
   }
-
 
   if has "dev"; then
     command="dev"
@@ -33,7 +52,8 @@ function default-command() {
   fi
 
   if [ -z "$command" ]; then
-    echo "No command specified"
+    echo "Please give me a command"
+    echo "I don't see a dev, start or serve command in package.json, deno.json or Makefile"
     exit 1
   fi
 }

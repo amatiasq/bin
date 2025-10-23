@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+[ -z "$1" ] && { echo "Usage: $0 <port-number>"; exit 1; }
+
+sudo lsof -nP -iTCP:"$1" -sTCP:LISTEN

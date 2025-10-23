@@ -11,19 +11,32 @@ file="$1"
 name="$2"
 
 if [ -z "$file" ]; then
-  echo "Usage: $0 <file> [name]"
+  echo "Usage: $0 <path or url> [name]"
   exit 1
 fi
 
 if [ ! -f "$file" ]; then
-  echo "File not found!"
-  exit 1
+  if [[ "$file" =~ ^https?:// ]]; then
+    tmpfile=$(mktemp /tmp/meme-XXXXXX)
+    curl -L -o "$tmpfile" "$file"
+    if [ $? -ne 0 ]; then
+      echo "Error downloading file!"
+      exit 1
+    fi
+    file="$tmpfile"
+    REMOVE=1
+  else
+    echo "File not found!"
+    exit 1
+  fi
 fi
 
 dest="vps/docker/com_amatiasq_meme/memes"
 
 if [ -z "$name" ]; then
   dest="$dest/$(basename "$file")"
+elif [[ "$name" == *.* ]]; then
+  dest="$dest/$name"
 else
   extension="${file##*.}"
   dest="$dest/$name.$extension"

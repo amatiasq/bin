@@ -1,0 +1,3 @@
+#!/bin/bash -e
+
+mv ~/Desktop/Screenshot* ~/Drive/Imagenes/'Capturas de Pantalla'
