@@ -14,13 +14,13 @@ function main() {
     }
 
     if at-dir "~/yego/web-backoffice"; then
-      yego-bo-start
+      yego bo start
       exit $?
     elif at-dir "~/yego/app-user"; then
-      app-start user
+      yego app start
       exit $?
     elif at-dir "~/yego/app-ranger"; then
-      app-start ranger
+      yego app start
       exit $?
     fi
 

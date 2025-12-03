@@ -39,6 +39,10 @@ elif [[ "$name" == *.* ]]; then
   dest="$dest/$name"
 else
   extension="${file##*.}"
+  if [ "$extension" == "$file" ]; then
+    echo 'Error: could not determine file extension!' >&2
+    exit 1
+  fi
   dest="$dest/$name.$extension"
 fi
 

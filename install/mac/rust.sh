@@ -12,3 +12,6 @@ cargo install cargo-watch
 cargo install cargo-generate
 
 # cargo install cargo-binstall
+
+# mermaid renderer and editor
+cargo install oxdraw

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+git fsck --unreachable --no-reflogs \
+  | grep 'unreachable commit' \
+  | awk '{print $3}' \
+  | xargs git log --oneline --no-walk

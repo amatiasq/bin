@@ -1,0 +1,84 @@
+#!/bin/bash -e
+failed=
+
+function main() {
+  if [ "$#" -eq 0 ]; then
+    help
+    return 1
+  fi
+
+
+  pushd $(find_git_directory) >/dev/null
+
+  path="$(basename $(pwd))"
+  PARENT="./"
+  run_recursively "$@"
+
+  echo -e "🌲 \033[0;32mRunning in $PARENT\033[0;0m"
+
+  if [[ "$@" == "commit"* ]]; then
+    list_submodules | while read path; do
+      git add $path
+    done
+  fi
+
+  if ! git "$@"; then
+    echo -e "🌲 \033[0;31m < Failed to run git command in $path\033[0;0m"
+    failed=1
+  fi
+
+  popd >/dev/null
+
+  if [ "$failed" ]; then
+    exit 1
+  fi
+}
+
+function run_recursively() {
+  list_submodules | while read path; do
+    pushd $path >/dev/null
+      local print_path="$PARENT$path"
+      [ -f .gitmodules ] && PARENT="$print_path/" run_recursively "$@"
+
+      echo -e "🌲 \033[0;32mRunning in $print_path\033[0;0m"
+      if ! git "$@"; then
+        echo -e "🌲 \033[0;31m < Failed to run git command in $print_path\033[0;0m"
+        failed=1
+        true
+      fi
+    popd >/dev/null
+  done
+}
+
+function list_submodules() {
+  cat .gitmodules | grep 'path =' | sed 's/path = //'
+}
+
+function find_git_directory() {
+  # Start from the current directory
+  current_dir=$(pwd)
+
+  # Traverse directories upwards
+  while [ "$current_dir" != "/" ]; do
+    if [ -d "$current_dir/.git" ]; then
+      echo "$current_dir"
+      return 0
+    fi
+
+    # Move to the parent directory
+    current_dir=$(dirname "$current_dir")
+  done
+
+  # No .git directory is found
+  return 1
+}
+
+function help() {
+  echo "Run a git command in the root repository and all submodules."
+  echo "Usage: $0 <git-command>"
+  return 1
+}
+
+# --- ENTRY POINT ---
+
+main "$@"

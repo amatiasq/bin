@@ -1,0 +1,82 @@
+#!/bin/bash
+
+prefix=
+a="$(git name-rev --name-only HEAD)"
+b=
+
+main() {
+  git fetch
+
+  common_hash=$(git merge-base "$a" "$b")
+
+  echo -e "Comparing \033[0;32m$a\033[0m and \033[0;33m$b\033[0m from common ancestor:"
+  echo ''
+  git log --oneline -n1 "$common_hash"
+  echo ''
+
+  # if either branch is an ancestor of the other, just show that
+  if [[ "$(git rev-parse "$a")" != "$common_hash" ]]; then
+    echo -e "Commits in \033[0;32m$a\033[0m not in \033[0;33m$b\033[0m since $common_hash:"
+    echo ''
+    git log --oneline "$common_hash".."$a"
+  else
+    echo -e "No commits in \033[0;32m$a\033[0m not in \033[0;33m$b\033[0m"
+  fi
+
+  echo ''
+
+  if [[ "$(git rev-parse "$b")" != "$common_hash" ]]; then
+    echo -e "Commits in \033[0;33m$b\033[0m not in \033[0;32m$a\033[0m since $common_hash:"
+    echo ''
+    git log --oneline "$common_hash".."$b"
+  else
+    echo -e "No commits in \033[0;33m$b\033[0m not in \033[0;32m$a\033[0m"
+  fi
+}
+
+process-args() {
+  while [[ -n "$1" ]]; do
+    case "$1" in
+      -h|--help)
+        echo "Usage: $(basename $0) [--print-aliases] [--print-path] [alias|canonical-name]"
+        exit 0;;
+      -o|--origin)
+        prefix='origin/';;
+      -*)
+        echo "Unknown option: $1" >&2
+        exit 1;;
+      *)
+
+        if [[ -z "$b" ]]; then
+          b="$1"
+        elif [[ "$a" == "$(git branch --show-current)" ]]; then
+          a="$b"
+          b="$1"
+        else
+          echo "Too many arguments: $b $a $1" >&2
+          exit 1
+        fi
+        ;;
+    esac
+    shift
+  done
+
+  if [[ -z "$a" || -z "$b" ]]; then
+    echo "Usage: $(basename $0) [--origin] <branch-a> <branch-b>" >&2
+    exit 1
+  fi
+
+  if [[ "$a" == "$b" ]]; then
+    echo "Both branches are the same: $a" >&2
+    exit 1
+  fi
+
+  if [[ -n "$prefix" ]]; then
+    a="$prefix$a"
+    b="$prefix$b"
+  fi
+}
+
+# --- ENTRY POINT ---
+process-args "$@"
+main

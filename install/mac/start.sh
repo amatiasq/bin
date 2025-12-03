@@ -8,7 +8,7 @@ run shell.sh
 run applications.sh
 run repos.sh
 run node.sh
-# run rust.sh
+run rust.sh
 run config.sh
 
 cat "$HOME/bin/install/mac/messages.md"
