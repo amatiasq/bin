@@ -1,0 +1,10 @@
+#!/bin/bash
+
+git fsck --no-reflogs --lost-found --unreachable 2>/dev/null \
+  | awk '/unreachable commit|dangling commit/ {print $3}' \
+  | while read c; do
+      git cat-file -e "$c^{tree}" 2>/dev/null || continue
+      git show -s --pretty=format:'%ct %H %s' "$c"
+      printf '\n'
+    done \
+  | sort -n

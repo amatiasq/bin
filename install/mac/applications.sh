@@ -51,6 +51,7 @@ brew install --cask prusaslicer
 brew install --cask autodesk-fusion360
 brew install --cask macmediakeyforwarder
 brew install --cask charles
+brew install --cask nikitabobko/tap/aerospace
 
 # YEGO
 brew install --cask slack
@@ -64,3 +65,6 @@ brew install --cask veracrypt
 cd ~/Downloads
 wget https://github.com/osxfuse/osxfuse/releases/download/macfuse-4.4.2/macfuse-4.4.2.dmg
 open macfuse-4.4.2.dmg
+
+wget https://downloads.mixxx.org/releases/2.5.3/mixxx-2.5.3-macosarm.dmg
+open mixxx-2.5.3-macosarm.dmg

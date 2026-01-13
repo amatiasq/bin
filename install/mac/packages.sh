@@ -30,6 +30,8 @@ brew install xo/xo/usql
 brew install zsh
 brew install helix
 brew install yt-dlp
+brew install snitch
+
 
 brew install ollama
 brew services start ollama

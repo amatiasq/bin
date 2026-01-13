@@ -1,8 +1,10 @@
 #!/bin/bash
 
 prefix=
-a="$(git name-rev --name-only HEAD)"
+a_set=
 b=
+a="$(git branch --show-current)"
+[[ -z "$a" ]] && a="$(git name-rev --name-only HEAD)"
 
 main() {
   git fetch
@@ -46,12 +48,12 @@ process-args() {
         echo "Unknown option: $1" >&2
         exit 1;;
       *)
-
         if [[ -z "$b" ]]; then
           b="$1"
-        elif [[ "$a" == "$(git branch --show-current)" ]]; then
+        elif [[ -z "$a_set" ]]; then
           a="$b"
           b="$1"
+          a_set=1
         else
           echo "Too many arguments: $b $a $1" >&2
           exit 1
@@ -61,6 +63,16 @@ process-args() {
     shift
   done
 
+  if [[ -n "$prefix" ]]; then
+    git fetch
+    if [[ -z "$b" ]]; then
+      b="$prefix$a"
+    else
+      a="$prefix$a"
+      b="$prefix$b"
+    fi
+  fi
+
   if [[ -z "$a" || -z "$b" ]]; then
     echo "Usage: $(basename $0) [--origin] <branch-a> <branch-b>" >&2
     exit 1
@@ -69,11 +81,6 @@ process-args() {
   if [[ "$a" == "$b" ]]; then
     echo "Both branches are the same: $a" >&2
     exit 1
-  fi
-
-  if [[ -n "$prefix" ]]; then
-    a="$prefix$a"
-    b="$prefix$b"
   fi
 }
 

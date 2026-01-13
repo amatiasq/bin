@@ -1,6 +1,0 @@
-#!/bin/bash -e
-
-url="$1"
-origin="$(echo "$1" | sed -E 's#(https?://[^/]+).*#\1#')"
-
-curl -s "$url" | bunx mdream --preset minimal --origin "$origin"

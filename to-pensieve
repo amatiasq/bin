@@ -1,0 +1,68 @@
+#!/bin/bash -e
+
+KIND="Articles"
+COPY_TO_CLIPBOARD=1
+URL=
+
+while [[ "$#" -gt 0 ]]; do
+  case "$1" in
+    -h|--help)
+      echo "Usage: $0 [--article|-a | --tool|-t | --learn|-l | --software|-s | --web-component|-w] [--print|-p] <URL>"
+      exit 0;;
+    -a|--article)
+      KIND="Articles";;
+    -t|--tool)
+      KIND="Tools";;
+    -l|--learn)
+      KIND="Learn";;
+    -s|--software)
+      KIND="Software";;
+    -w|--web-component)
+      KIND="WebComponents";;
+    -p|--print)
+      COPY_TO_CLIPBOARD=0;;
+    http*)
+      URL="$1";;
+  esac
+  shift
+done
+
+if [[ -z "$URL" ]]; then
+  echo "Error: URL is required."
+  exit 1
+fi
+
+origin="$(echo "$URL" | sed -E 's#(https?://[^/]+).*#\1#')"
+
+markdown=$(
+  curl -s "$URL" \
+  | bunx mdream --preset minimal --origin "$origin" \
+  | URL="$URL" KIND="$KIND" node -e '
+      const content = require("fs").readFileSync(0, "utf-8");
+      const [, frontmatter, ...rest] = content.split(/^---$/mg);
+      const { title, ...meta } = Object.fromEntries(
+        frontmatter
+          ?.split("\n")
+          .filter(line => line.includes(": "))
+          .map(line => line.split(/:\s/).map(s => s.trim().replace(/^"(.*)"$/, "$1")))
+          ?? []
+      );
+
+      console.log(`
+# ${process.env.KIND} / ${meta.author ? title.replace(meta.author, "") : title}
+${process.env.URL}
+
+${Object.entries(meta).map(([key, value]) => `- ${key}: ${value}`).join("\n")}
+
+${rest.join("\n---\n").trim()}
+      `.trim());
+    '
+)
+
+if [[ $COPY_TO_CLIPBOARD -eq 1 ]]; then
+  echo "$markdown" | pbcopy
+  echo "$markdown" | head -n 10
+  echo "... (copied to clipboard)"
+else
+  echo "$markdown"
+fi

@@ -7,47 +7,27 @@ function main() {
     return 1
   fi
 
+  pushd "$(find_git_directory)" >/dev/null
+    DIR="./" run_in "$@"
+  popd >/dev/null
 
-  pushd $(find_git_directory) >/dev/null
+  [ -n "$failed" ] && exit 1
+}
 
-  path="$(basename $(pwd))"
-  PARENT="./"
-  run_recursively "$@"
-
-  echo -e "🌲 \033[0;32mRunning in $PARENT\033[0;0m"
-
-  if [[ "$@" == "commit"* ]]; then
+function run_in() {
+  if [ -f .gitmodules ]; then
     list_submodules | while read path; do
-      git add $path
+      pushd $path >/dev/null
+        DIR="$DIR$path/" run_in "$@"
+      popd >/dev/null
     done
   fi
 
+  echo -e "🌲 \033[0;32mRunning in $DIR\033[0;0m" >&2
   if ! git "$@"; then
-    echo -e "🌲 \033[0;31m < Failed to run git command in $path\033[0;0m"
+    echo -e "🌲 \033[0;31m < Failed to run  command in $DIR\033[0;0m" >&2
     failed=1
   fi
-
-  popd >/dev/null
-
-  if [ "$failed" ]; then
-    exit 1
-  fi
-}
-
-function run_recursively() {
-  list_submodules | while read path; do
-    pushd $path >/dev/null
-      local print_path="$PARENT$path"
-      [ -f .gitmodules ] && PARENT="$print_path/" run_recursively "$@"
-
-      echo -e "🌲 \033[0;32mRunning in $print_path\033[0;0m"
-      if ! git "$@"; then
-        echo -e "🌲 \033[0;31m < Failed to run git command in $print_path\033[0;0m"
-        failed=1
-        true
-      fi
-    popd >/dev/null
-  done
 }
 
 function list_submodules() {
@@ -55,17 +35,14 @@ function list_submodules() {
 }
 
 function find_git_directory() {
-  # Start from the current directory
   current_dir=$(pwd)
 
-  # Traverse directories upwards
   while [ "$current_dir" != "/" ]; do
     if [ -d "$current_dir/.git" ]; then
       echo "$current_dir"
       return 0
     fi
 
-    # Move to the parent directory
     current_dir=$(dirname "$current_dir")
   done
 
