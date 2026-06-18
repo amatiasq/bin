@@ -7,17 +7,19 @@ URL=
 while [[ "$#" -gt 0 ]]; do
   case "$1" in
     -h|--help)
-      echo "Usage: $0 [--article|-a | --tool|-t | --learn|-l | --software|-s | --web-component|-w] [--print|-p] <URL>"
+      echo "Usage: $0 [--article | --tool | --learn | --software | --web-component] [--print|-p] <URL>"
       exit 0;;
-    -a|--article)
+    --article)
       KIND="Articles";;
-    -t|--tool)
+    --tool)
       KIND="Tools";;
-    -l|--learn)
+    --library)
+      KIND="Libraries";;
+    --learn)
       KIND="Learn";;
-    -s|--software)
+    --software)
       KIND="Software";;
-    -w|--web-component)
+    --web-component)
       KIND="WebComponents";;
     -p|--print)
       COPY_TO_CLIPBOARD=0;;

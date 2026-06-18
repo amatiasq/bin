@@ -9,6 +9,11 @@ function main() {
   if [ -n "$command" ]; then
     shift
   else
+    if [ -f "run.sh" ]; then
+      ./run.sh "$@"
+      exit $?
+    fi
+
     function at-dir() {
       [ "$(pwd)" = "$1" ] || [ "$(pwd)" = "$(eval echo $1)" ]
     }
