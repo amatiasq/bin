@@ -1,0 +1,9 @@
+#!/bin/bash
+
+if [ $# -eq 0 ]; then
+  script="$(which amq)"
+else
+  script="$(PRINT_EXECUTABLE=1 amq $@)"
+fi
+
+$EDITOR "$script"

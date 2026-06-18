@@ -1,0 +1,78 @@
+#!/bin/bash -e
+
+DESTINATION=
+REMOVE=
+NEUTRALIZER=
+
+function main() {
+  amq adb install
+
+  DCIM_DIR="$(find-shorter-DCIM-dir)"
+
+  [ -z "$DCIM_DIR" ] && {
+    echo 'Folder DCIM not found in phone'
+    exit 2
+  }
+
+  $NEUTRALIZER adb pull "$DCIM_DIR" "$DESTINATION"
+
+  if [ -n "$REMOVE" ]; then
+    $NEUTRALIZER adb shell "rm -r $DCIM_DIR"
+    $NEUTRALIZER adb shell "mkdir $DCIM_DIR"
+  fi
+}
+
+function usage() {
+  self="$(basename $0)"
+  echo "Usage: $self [-d] <destination>"
+  echo
+  echo 'Copies the DCIM folder to <destination>'
+  echo
+  echo "Options:"
+  echo "  -h, --help        Show this help message and exit"
+  echo '  -d, --delete      Removes the DCIM folder from the phone after copying it.'
+  echo '  --dry, --dry-run  Echoes the write commands instead of running them'
+  echo
+  echo "Examples:"
+  echo "  $self --help                # Shows help message"
+  echo
+  echo "The order of parameters doesn't matter."
+}
+
+function find-shorter-DCIM-dir() {
+  adb shell 'find / -type d -name DCIM 2>/dev/null' \
+  | awk '{ print length "\t" $0 }' \
+  | sort -n \
+  | cut -f2- \
+  | head -1
+}
+
+function process-args() {
+  local positional=()
+
+  while [[ -n "$1" ]]; do
+    case "$1" in
+      -h|--help) usage; exit 0 ;;
+      -d|--delete) REMOVE=1 ;;
+      --dry|--dry-run) NEUTRALIZER='echo ' ;;
+      -*)
+        echo "Unknown option: $1" >&2
+        exit 1;;
+      *) positional+=("$1");;
+    esac
+    shift
+  done
+
+  case "${#positional[@]}" in
+    0) usage >&2; exit 1; ;;
+    1) DESTINATION="${positional[0]}" ;;
+    *)
+      echo "Too many arguments: ${#positional[@]}" >&2
+      usage >&2
+      exit 2;;
+  esac
+}
+
+# --- ENTRY POINT ---
+process-args "$@"
+main

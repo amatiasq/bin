@@ -1,0 +1,19 @@
+#!/bin/bash -e
+
+branch="$1"
+
+if [ -z "$branch" ]; then
+  echo "Usage: git-bring-branch <branch-name>"
+  exit 1
+fi
+
+current_branch=$(git branch --show-current)
+current_commit=$(git rev-parse HEAD)
+
+if [ "$current_branch" == "$branch" ]; then
+  echo "You are already on branch '$branch'."
+  exit 0
+fi
+
+git checkout "$branch"
+git reset --hard "$current_commit"

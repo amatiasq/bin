@@ -1,0 +1,10 @@
+#!/bin/bash -e
+
+amq adb install
+
+[ -z "$1" ] && {
+  echo "Usage: $(basename $0) <directory>"
+  exit 1
+}
+
+adb shell "du -sh $1/* 2>/dev/null" | sort -rh

@@ -30,7 +30,7 @@ brew install --cask calibre
 brew install --cask docker
 brew install --cask keka
 brew install --cask xscope
-# brew install --cask lm-studio # requires ARM
+brew install --cask lm-studio # requires ARM
 
 # Entretainment
 brew install --cask steam
@@ -47,11 +47,13 @@ brew install --cask blender
 brew install --cask openscad
 brew install --cask unity-hub
 brew install --cask obs
+brew install --cask cryptomator
 brew install --cask prusaslicer
 brew install --cask autodesk-fusion360
 brew install --cask macmediakeyforwarder
 brew install --cask charles
 brew install --cask nikitabobko/tap/aerospace
+brew install anomalyco/tap/opencode
 
 # YEGO
 brew install --cask slack

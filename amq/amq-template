@@ -1,0 +1,51 @@
+#!/bin/bash -e
+
+cat <<'EOF'
+#!/bin/bash -e
+
+function main() {
+  # do stuff
+}
+
+function usage() {
+  self="$(basename $0)"
+  echo "Usage: $self"
+  echo
+  echo "Options:"
+  echo "  -h, --help        Show this help message and exit"
+  echo
+  echo "Examples:"
+  echo "  $self --help                # Shows help message"
+  echo
+  echo "The order of parameters doesn't matter."
+}
+
+# helper functions here
+
+function process-args() {
+  local positional=()
+
+  while [[ -n "$1" ]]; do
+    case "$1" in
+      -h|--help) usage; exit 0;;
+      -*)
+        echo "Unknown option: $1" >&2
+        exit 1;;
+      *) positional+=("$1");;
+    esac
+    shift
+  done
+
+  case "${#positional[@]}" in
+    0) ;;
+    *)
+      echo "Too many arguments: ${#positional[@]}" >&2
+      usage >&2
+      exit 2;;
+  esac
+}
+
+# --- ENTRY POINT ---
+process-args "$@"
+main
+EOF

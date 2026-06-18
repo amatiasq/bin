@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# This file is a amq command (you can call it as `amq autocomplete --test whatever`)
+# It is also sourced by the main amq script to provide autocomplete functionality
+# Which should be loaded in your .bashrc or .zshrc
+
+[ -z "$REPOS_DIR" ] && export REPOS_DIR="$HOME/repos"
+
+for i in $(ls "$REPOS_DIR"); do
+  if [[ -d "$REPOS_DIR/$i/amq" ]]; then # && [[ ":$PATH:" != *":$REPOS_DIR/$i/amq:"* ]]; then
+    PATH="$REPOS_DIR/$i/amq:$PATH"
+  fi
+done
+
+amq_autocomplete() {
+  local scope="amq-"
+
+  while [[ "$#" -gt 1 ]]; do
+    scope="${scope}$1-"
+    shift
+  done
+
+  local expectation="$scope$1"
+
+  if [ -n "$ZSH_VERSION" ]; then
+    setopt localoptions null_glob
+  else
+    shopt -s nullglob
+  fi
+
+  for p in $(echo $PATH | tr ':' '\n' | sort -u); do
+    [[ ! -d "$p" ]] && continue
+
+    for f in "$p"/"$expectation"*; do
+      [[ ! -f "$f" ]] && continue
+      basename "$f" | sed "s/^$scope//g"
+    done
+  done
+}
+
+if [[ "$1" == "--test" ]]; then
+  shift
+  amq_autocomplete "$@"
+  exit 0
+fi
+
+if [ -n "$BASH_VERSION" ]; then
+  _amq_complete_bash() {
+    local cur="${COMP_WORDS[COMP_CWORD]}"
+    local suggestions
+    suggestions=$(amq_autocomplete "${COMP_WORDS[@]:1}")
+    COMPREPLY=( $(compgen -W "$suggestions" -- "$cur") )
+  }
+  complete -F _amq_complete_bash amq
+
+elif [ -n "$ZSH_VERSION" ]; then
+  autoload -Uz compinit && compinit
+
+  _amq_complete() {
+    emulate -L zsh
+    setopt noshwordsplit
+    local -a completions
+    completions=("${(@f)$(amq_autocomplete "${words[@]:1}")}")
+    compadd -Q -- "${completions[@]}"
+  }
+
+  compdef _amq_complete amq
+fi

@@ -10,5 +10,6 @@ run repos.sh
 run node.sh
 run rust.sh
 run config.sh
+run launch-agents.sh
 
 cat "$HOME/bin/install/mac/messages.md"

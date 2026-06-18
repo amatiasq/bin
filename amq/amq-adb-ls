@@ -1,0 +1,5 @@
+#!/bin/bash -e
+
+amq adb install
+
+adb shell 'ls -lah /storage/emulated/0'

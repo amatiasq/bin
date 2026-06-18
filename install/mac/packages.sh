@@ -19,7 +19,8 @@ brew install git-lfs
 brew install git-who
 brew install imagemagick
 brew install jq
-brew install jd
+# brew install jd
+brew install mq
 brew install neilotoole/sq/sq
 brew install pyenv
 brew install thefuck
@@ -32,9 +33,7 @@ brew install helix
 brew install yt-dlp
 brew install snitch
 
-
-brew install ollama
-brew services start ollama
+brew install --cask android-platform-tools
 
 # NVM is a special case
 brew install nvm

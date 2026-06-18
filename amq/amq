@@ -1,0 +1,160 @@
+#!/bin/bash -e
+
+[ -z "$REPOS_DIR" ] && export REPOS_DIR="$HOME/repos"
+
+# for i in $(ls "$REPOS_DIR"); do
+#   if [[ -d "$REPOS_DIR/$i/amq" ]] && [[ ":$PATH:" != *":$REPOS_DIR/$i/amq:"* ]]; then
+#     PATH="$REPOS_DIR/$i/amq:$PATH"
+#   fi
+# done
+
+FOUND_EXEC=""
+CONSUMED=0
+dir=
+
+main() {
+  case "$1" in
+    ''|-h|--help|help)
+      print-help
+      exit 0
+      ;;
+
+    mono|mono-*)         set-dir ./mono;;
+    pensieve|pensieve-*) set-dir ./mono/pensieve;;
+    conta|conta-*)       set-dir ./mono/conta;;
+  esac
+
+  if [ "$2" == 'cd' ] && [ -n "$dir" ]; then
+    cd "$dir"
+    exec "$SHELL"
+    exit $?
+  fi
+
+  find-executable "$@"
+  executable="$FOUND_EXEC"
+
+  if [ -n "$PRINT_EXECUTABLE" ]; then
+    echo "$executable"
+    exit 0
+  fi
+
+  if [ ! -f "$executable" ]; then
+    echo "Could not find executable for command: $*" >&2
+    exit 3
+  fi
+
+  [[ -n "$dir" ]] && cd "$dir"
+  set -- "${@:CONSUMED+1}"
+
+  [[ -n "$AMQ_DEBUG" ]] && {
+    debug_line="$executable\033[1;34m $@\033[0m"
+    echo -e "\033[1;32m> $debug_line" >&2
+  }
+
+  "$executable" "$@" || {
+    local exit_code=$?
+    [[ -n "$AMQ_DEBUG" ]] && echo -e "\033[1;31m<$exit_code $debug_line" >&2
+    exit $exit_code
+  }
+
+  [[ -n "$AMQ_DEBUG" ]] && echo -e "\033[1;33m< $debug_line" >&2
+  exit 0
+}
+
+set-dir() {
+  dir="$REPOS_DIR/$1"
+
+  if [[ ! -d "$dir" ]]; then
+    echo "Directory does not exist: $dir" >&2
+    read -p "Clone it? (y/n) " yn
+
+    case $yn in
+      [Yy]*)
+        local repo_name=$(echo "$1" | sed 's|^\./||' | cut -d/ -f1)
+        git clone git@github.com:amatiasq/$repo_name "$REPOS_DIR/$repo_name" \
+        || exit 4;;
+    esac
+  fi
+
+  if [ ! -d "$dir" ]; then
+    echo "Directory does not exist: $dir" >&2
+    exit 2
+  fi
+}
+
+find-executable() {
+  is-executable() {
+    if which "$1" >/dev/null 2>&1; then
+      FOUND_EXEC="$(which "$1")"
+      return 0
+    fi
+
+    for p in $(echo $PATH | tr ':' '\n'); do
+      local full_path="$p/$1"
+
+      [[ ! -f "$full_path" ]] && continue
+      if [ -x "$full_path" ]; then
+        FOUND_EXEC="$full_path"
+        return 0
+      fi
+
+      echo "File exists but is not executable: $full_path" >&2
+      echo "Do you want to make it executable?" >&2
+      echo "This will run 'chmod +x $full_path'" >&2
+      read -p "Proceed? (y/n) " yn
+      case $yn in
+        [Yy]* )
+          chmod +x "$full_path"
+          FOUND_EXEC="$full_path"
+          echo
+          return 0;;
+      esac
+      continue
+    done
+
+    return 1
+  }
+
+  if is-executable "amq-$1-$2-$3-$4"; then
+    CONSUMED=4
+  elif is-executable "amq-$1-$2-$3"; then
+    CONSUMED=3
+  elif is-executable "amq-$1-$2"; then
+    CONSUMED=2
+  elif is-executable "amq-$1"; then
+    CONSUMED=1
+  else
+    echo "Unknown AMQ command: $*" >&2
+    exit 1
+  fi
+}
+
+print-help() {
+  commands="help (internal)"
+  for p in $(echo $PATH | tr ':' '\n' | sort -u); do
+    for f in "$p"/amq-*; do
+      [[ ! -f "$f" ]] && continue
+    commands="$commands
+$(basename "$f" | sed 's/^amq-//g') $(echo $f | sed "s|$HOME|~|")"
+    done
+  done
+
+  echo "Usage: amq [command] [args...]"
+  echo ''
+  echo "Configuration:"
+  echo "  Set REPOS_DIR to change the base directory (default: ~/repos)"
+  echo "  Set AMQ_DEBUG=1 to enable debug output"
+  echo "  Set PRINT_EXECUTABLE=1 to just print the path to the command script"
+  echo ''
+  echo "Commands are any file named amq-[command] in \$PATH"
+  echo ''
+  echo "Available commands:"
+  echo "$commands" | column -t | sed 's/^/  /' | sort
+  echo ''
+  echo "Special commands:"
+  echo "  amq {project} cd - Change directory to the project root"
+  echo ''
+}
+
+# --- ENTRY POINT ---
+main "$@"

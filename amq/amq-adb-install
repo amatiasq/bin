@@ -1,0 +1,7 @@
+#!/bin/bash -e
+
+command -v adb >/dev/null && exit 0
+
+echo "adb not installed, installing with brew..."
+brew install --cask android-platform-tools
+echo
