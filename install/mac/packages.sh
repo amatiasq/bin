@@ -35,6 +35,9 @@ brew install snitch
 
 brew install --cask android-platform-tools
 
+# Pi
+npm install -g --ignore-scripts @earendil-works/pi-coding-agent
+
 # NVM is a special case
 brew install nvm
 mkdir ~/.nvm

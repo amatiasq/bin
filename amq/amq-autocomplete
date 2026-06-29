@@ -54,7 +54,10 @@ if [ -n "$BASH_VERSION" ]; then
   complete -F _amq_complete_bash amq
 
 elif [ -n "$ZSH_VERSION" ]; then
-  autoload -Uz compinit && compinit
+  # Only run compinit if it hasn't been initialized yet. Running it again here
+  # would reset the completion system and drop compdef registrations made by
+  # other tools sourced before this script (e.g. yego-autocomplete).
+  (( ${+_comps} )) || { autoload -Uz compinit && compinit }
 
   _amq_complete() {
     emulate -L zsh
