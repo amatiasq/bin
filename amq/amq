@@ -8,6 +8,17 @@
 #   fi
 # done
 
+MONOREPO="$REPOS_DIR/mono"
+if [ -d "$MONOREPO" ]; then
+  for i in $(ls "$MONOREPO"); do
+    if [[ -d "$MONOREPO/$i/amq" ]] && \
+       [[ ":$PATH:" != *":$MONOREPO/$i/amq:"* ]]
+    then
+      PATH="$MONOREPO/$i/amq:$PATH"
+    fi
+  done
+fi
+
 FOUND_EXEC=""
 CONSUMED=0
 dir=

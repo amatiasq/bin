@@ -1,9 +1,20 @@
 #!/bin/bash
 
+if [ -z "$EDITOR" ]; then
+  echo
+  echo 'Environment variable $EDITOR is not set'
+  echo 'Running this command without $EDITOR will have unexpected effects'
+  echo 'Aborting'
+  echo
+  exit 1
+fi
+
 if [ $# -eq 0 ]; then
   script="$(which amq)"
 else
   script="$(PRINT_EXECUTABLE=1 amq $@)"
 fi
+
+echo "Opening $EDITOR '$script'"
 
 $EDITOR "$script"

@@ -6,11 +6,22 @@
 
 [ -z "$REPOS_DIR" ] && export REPOS_DIR="$HOME/repos"
 
-for i in $(ls "$REPOS_DIR"); do
-  if [[ -d "$REPOS_DIR/$i/amq" ]]; then # && [[ ":$PATH:" != *":$REPOS_DIR/$i/amq:"* ]]; then
-    PATH="$REPOS_DIR/$i/amq:$PATH"
-  fi
-done
+# for i in $(ls "$REPOS_DIR"); do
+#   if [[ -d "$REPOS_DIR/$i/amq" ]]; then # && [[ ":$PATH:" != *":$REPOS_DIR/$i/amq:"* ]]; then
+#     PATH="$REPOS_DIR/$i/amq:$PATH"
+#   fi
+# done
+
+MONOREPO="$REPOS_DIR/mono"
+if [ -d "$MONOREPO" ]; then
+  for i in $(ls "$MONOREPO"); do
+    if [[ -d "$MONOREPO/$i/amq" ]] && \
+       [[ ":$PATH:" != *":$MONOREPO/$i/amq:"* ]]
+    then
+      PATH="$MONOREPO/$i/amq:$PATH"
+    fi
+  done
+fi
 
 amq_autocomplete() {
   local scope="amq-"
